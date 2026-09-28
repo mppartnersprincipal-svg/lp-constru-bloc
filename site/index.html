@@ -28,6 +28,23 @@
 
 <script>document.documentElement.classList.add('js')</script>
 
+<!-- Google Analytics 4 — cole o ID de métricas da propriedade (G-XXXXXXXXXX) em GA_ID.
+     Enquanto estiver vazio, nada é carregado; os eventos de clique ficam só no dataLayer. -->
+<script>
+(function(){
+  var GA_ID = '';
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ window.dataLayer.push(arguments); };
+  if (!/^G-[A-Z0-9]+$/.test(GA_ID)) return;
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+  document.head.appendChild(s);
+  window.gtag('js', new Date());
+  window.gtag('config', GA_ID);
+})();
+</script>
+
 <style>
 /* ============ Tokens (Design System Construbloc) ============ */
 :root{
@@ -308,15 +325,22 @@ h4{margin:0}
 @media (min-width:768px){.footer .cols{grid-template-columns:1.2fr 1fr 1fr}}
 @media (max-width:1023px){.footer{padding-bottom:calc(96px + env(safe-area-inset-bottom))}}
 
-/* ============ WhatsApp flutuante / barra fixa mobile ============ */
-.mbar{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);border-top:1px solid var(--cb-line-200);box-shadow:0 -6px 18px rgba(0,8,56,.1);transform:translateY(110%);transition:transform var(--dur-base) var(--ease-out)}
+/* ============ WhatsApp + ligação flutuantes / barra fixa mobile ============ */
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;gap:10px;padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);border-top:1px solid var(--cb-line-200);box-shadow:0 -6px 18px rgba(0,8,56,.1);transform:translateY(110%);transition:transform var(--dur-base) var(--ease-out)}
 .mbar.show{transform:none}
-.fab{display:none}
+.mbar .btn-wa{flex:1;min-width:0}
+.mbar .tel{display:grid;place-items:center;flex:none;width:56px;height:56px;border-radius:50%;background:var(--cb-blue-600);color:#fff;-webkit-tap-highlight-color:transparent}
+.mbar .tel:active{background:var(--cb-blue-800)}
+.fabs{display:none}
 @media (min-width:1024px){
   .mbar{display:none}
-  .fab{position:fixed;right:24px;bottom:24px;z-index:50;display:grid;place-items:center;width:60px;height:60px;border-radius:50%;background:var(--wa);color:var(--wa-ink);box-shadow:var(--shadow-lg);transition:transform var(--dur-base) var(--ease-out),background var(--dur-fast)}
+  .fabs{position:fixed;right:24px;bottom:24px;z-index:50;display:flex;flex-direction:column;align-items:center;gap:12px}
+  .fab{display:grid;place-items:center;width:60px;height:60px;border-radius:50%;background:var(--wa);color:var(--wa-ink);box-shadow:var(--shadow-lg);transition:transform var(--dur-base) var(--ease-out),background var(--dur-fast)}
   .fab:hover{background:var(--wa-hover);transform:translateY(-2px)}
   .fab .ic{width:30px;height:30px}
+  .fab-tel{width:52px;height:52px;background:#fff;color:var(--cb-blue-600);border:2px solid var(--cb-blue-100)}
+  .fab-tel:hover{background:var(--cb-blue-50)}
+  .fab-tel .ic{width:24px;height:24px}
 }
 
 /* ============ Reveal (só com JS e sem reduced-motion) ============ */
@@ -747,7 +771,7 @@ h4{margin:0}
           <li><a href="https://wa.me/556235791166" data-wa="Olá! Vim pelo site da Construbloc." data-cta="footer-wa" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp: (62) 3579-1166</a></li>
           <li><a href="tel:+556230911091" data-cta="footer-tel"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>Telefone: (62) 3091-1091</a></li>
           <li><a href="https://www.instagram.com/construbloc_/" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-ig"/></svg>@construbloc_</a></li>
-          <li><a href="https://www.mercadolivre.com.br/loja/construbloc" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-bag"/></svg>Loja Oficial no Mercado Livre</a></li>
+          <li><a href="https://www.mercadolivre.com.br/loja/construbloc" data-cta="footer-mercadolivre" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-bag"/></svg>Loja Oficial no Mercado Livre</a></li>
         </ul>
       </div>
     </div>
@@ -755,15 +779,23 @@ h4{margin:0}
   </div>
 </footer>
 
-<!-- WhatsApp: barra fixa no mobile / botão flutuante no desktop -->
+<!-- WhatsApp + ligação: barra fixa no mobile / botões flutuantes no desktop -->
 <div class="mbar" id="mbar" aria-hidden="true">
   <a class="btn btn-wa btn-lg btn-block" href="https://wa.me/556235791166" data-wa="Olá! Vim pelo site e quero um orçamento." data-cta="barra-mobile" target="_blank" rel="noopener" tabindex="-1">
-    <svg class="ic" aria-hidden="true"><use href="#i-wa"/></svg>Pedir orçamento no WhatsApp
+    <svg class="ic" aria-hidden="true"><use href="#i-wa"/></svg>Orçamento no WhatsApp
+  </a>
+  <a class="tel" href="tel:+556230911091" data-cta="barra-mobile-tel" aria-label="Ligar para a Construbloc: (62) 3091-1091" tabindex="-1">
+    <svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>
   </a>
 </div>
-<a class="fab" href="https://wa.me/556235791166" data-wa="Olá! Vim pelo site e quero um orçamento." data-cta="flutuante" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
-  <svg class="ic" aria-hidden="true"><use href="#i-wa"/></svg>
-</a>
+<div class="fabs">
+  <a class="fab fab-tel" href="tel:+556230911091" data-cta="flutuante-tel" aria-label="Ligar para a Construbloc: (62) 3091-1091" title="Ligar: (62) 3091-1091">
+    <svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>
+  </a>
+  <a class="fab" href="https://wa.me/556235791166" data-wa="Olá! Vim pelo site e quero um orçamento." data-cta="flutuante" target="_blank" rel="noopener" aria-label="Falar no WhatsApp" title="WhatsApp: (62) 3579-1166">
+    <svg class="ic" aria-hidden="true"><use href="#i-wa"/></svg>
+  </a>
+</div>
 
 <script>
 (function(){
@@ -773,6 +805,19 @@ h4{margin:0}
   // Mensagem pré-preenchida por CTA — o time comercial sabe de onde o lead veio.
   document.querySelectorAll('[data-wa]').forEach(function(a){
     a.href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(a.getAttribute('data-wa'));
+  });
+
+  // Rastreamento de cliques (GA4 + dataLayer para GTM). Todo link com data-cta vira evento:
+  //   whatsapp_click → links wa.me · phone_click → links tel: · cta_click → demais
+  // Parâmetro cta_location = valor do data-cta (ex.: "hero", "flutuante-tel").
+  document.addEventListener('click', function(ev){
+    var a = ev.target.closest && ev.target.closest('a[data-cta]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var name = /wa\.me/.test(href) ? 'whatsapp_click' : /^tel:/.test(href) ? 'phone_click' : 'cta_click';
+    var params = { cta_location: a.getAttribute('data-cta'), link_url: href.split('?')[0] };
+    window.gtag('event', name, params);
+    window.dataLayer.push(Object.assign({ event: name }, params));
   });
 
   // Status "aberto agora" no fuso de Goiânia (America/Sao_Paulo), 7h às 19h todos os dias.
@@ -802,7 +847,7 @@ h4{margin:0}
     var show = !visible['hero-ctas'] && !visible['cta-final'];
     bar.classList.toggle('show', show);
     bar.setAttribute('aria-hidden', show ? 'false' : 'true');
-    bar.querySelector('a').tabIndex = show ? 0 : -1;
+    bar.querySelectorAll('a').forEach(function(a){ a.tabIndex = show ? 0 : -1; });
   });
   bo.observe(document.getElementById('hero-ctas'));
   bo.observe(document.getElementById('cta-final'));
