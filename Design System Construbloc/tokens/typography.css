@@ -1,0 +1,18 @@
+:root {
+  --font-display: "Russo One", "Arial Black", sans-serif;          /* wordmark-like, headlines only */
+  --font-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --font-label: "Barlow Condensed", "Arial Narrow", sans-serif;    /* tagline-like uppercase labels */
+
+  --text-xs: 12px;  --text-sm: 14px;  --text-md: 16px;  --text-lg: 18px;
+  --text-xl: 22px;  --text-2xl: 28px; --text-3xl: 36px; --text-4xl: 48px; --text-5xl: 64px;
+
+  --leading-tight: 1.05; --leading-snug: 1.2; --leading-normal: 1.5; --leading-relaxed: 1.65;
+  --tracking-display: 0.01em;
+  --tracking-label: 0.18em;   /* matches the tagline letter-spacing */
+  --weight-regular: 400; --weight-medium: 500; --weight-semibold: 600; --weight-bold: 700;
+}
+body { font-family: var(--font-body); color: var(--text-body); -webkit-font-smoothing: antialiased; }
+h1,h2,h3 { font-family: var(--font-display); color: var(--text-heading); letter-spacing: var(--tracking-display); line-height: var(--leading-tight); text-transform: uppercase; margin: 0; }
+h4,h5,h6 { font-family: var(--font-body); font-weight: var(--weight-bold); color: var(--text-heading); margin: 0; }
+a { color: var(--text-link); text-decoration: none; }
+a:hover { color: var(--text-link-hover); }

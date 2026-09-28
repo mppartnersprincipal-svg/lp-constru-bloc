@@ -1,0 +1,14 @@
+:root {
+  /* Corners: the logo is built from squared, slightly softened bars. Keep radii small. */
+  --radius-xs: 2px; --radius-sm: 4px; --radius-md: 6px; --radius-lg: 10px; --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(0,8,56,.08);
+  --shadow-md: 0 6px 18px rgba(0,8,56,.12);
+  --shadow-lg: 0 16px 40px rgba(0,8,56,.18);
+
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  --dur-fast: 120ms; --dur-base: 200ms;
+
+  /* Diagonal roof-line cut used on hero panels and section separators */
+  --clip-roof: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 48px));
+}

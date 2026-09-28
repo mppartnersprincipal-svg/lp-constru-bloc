@@ -1,0 +1,63 @@
+:root {
+  /* Brand — sampled from the logo */
+  --cb-blue-900: #000838;   /* deepest navy (roof shadow, chimney) */
+  --cb-blue-800: #000060;   /* window panes */
+  --cb-blue-700: #001060;
+  --cb-blue-600: #002080;   /* PRIMARY — wordmark blue */
+  --cb-blue-500: #1B3A9E;
+  --cb-blue-100: #E4E8F5;
+  --cb-blue-50:  #F1F3FA;
+
+  --cb-gold-600: #C99E00;
+  --cb-gold-500: #E0B000;   /* ACCENT — hammer head */
+  --cb-gold-400: #F0D830;
+  --cb-yellow-300: #F8F050; /* left roof highlight */
+  --cb-gold-100: #FBF3CC;
+
+  --cb-gray-500: #808080;   /* tagline gray */
+
+  /* Neutrals */
+  --cb-ink-900: #0E1220;
+  --cb-ink-700: #2A3042;
+  --cb-ink-500: #5B6275;
+  --cb-ink-300: #A2A8B8;
+  --cb-line-200: #DCE0EA;
+  --cb-surface-100: #F3F4F8;
+  --cb-white: #FFFFFF;
+
+  /* Semantic */
+  --cb-success: #1E8E3E;
+  --cb-warning: #E0B000;
+  --cb-danger:  #C62828;
+  --cb-info:    #002080;
+
+  /* Aliases */
+  --color-primary: var(--cb-blue-600);
+  --color-primary-hover: var(--cb-blue-700);
+  --color-primary-active: var(--cb-blue-800);
+  --color-accent: var(--cb-gold-500);
+  --color-accent-hover: var(--cb-gold-600);
+  --color-accent-soft: var(--cb-gold-100);
+  --color-on-primary: var(--cb-white);
+  --color-on-accent: var(--cb-blue-900);
+
+  --text-heading: var(--cb-blue-600);
+  --text-body: var(--cb-ink-700);
+  --text-muted: var(--cb-ink-500);
+  --text-inverse: var(--cb-white);
+  --text-link: var(--cb-blue-600);
+  --text-link-hover: var(--cb-gold-600);
+
+  --surface-page: var(--cb-white);
+  --surface-alt: var(--cb-surface-100);
+  --surface-card: var(--cb-white);
+  --surface-dark: var(--cb-blue-900);
+  --surface-brand: var(--cb-blue-600);
+  --border-default: var(--cb-line-200);
+  --border-strong: var(--cb-ink-300);
+  --focus-ring: 0 0 0 3px rgba(224,176,0,.55);
+
+  /* Brand gradients (mirror the logo roof) */
+  --gradient-gold: linear-gradient(90deg, #F8F050 0%, #E0B000 100%);
+  --gradient-blue: linear-gradient(90deg, #000838 0%, #002080 100%);
+}

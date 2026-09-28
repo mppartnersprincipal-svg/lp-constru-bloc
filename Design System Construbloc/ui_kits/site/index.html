@@ -1,0 +1,29 @@
+<!-- @dsCard group="Site" viewport="1280x900" name="Landing page" subtitle="Header, hero, categories, benefits, stores, FAQ, orçamento CTA, footer" -->
+<!-- @startingPoint section="Site" subtitle="Construbloc landing page — full scroll with orçamento dialog" viewport="1280x900" -->
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Construbloc — Materiais de Construção e Ferragista</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>html,body{margin:0;background:#fff}*{box-sizing:border-box}</style>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+</head><body><div id="root"></div>
+<script>
+window.__loadCore = async function(){
+  // Prefer the compiled design-system bundle when the compiler has produced it.
+  await new Promise(res => { const sc = document.createElement('script'); sc.src = '../../' + '_ds_bundle.js'; sc.onload = res; sc.onerror = res; document.head.appendChild(sc); });
+  let NS=null; for (const k of Object.keys(window)) { try { const v=window[k]; if (v && typeof v==='object' && v.Button && v.Accordion) { NS=v; break; } } catch(e){} }
+  if (NS) return NS; NS={};
+  for (const n of ['Button','IconButton','Input','Select','Checkbox','Badge','Tag','Card','Tabs','Accordion','Dialog','Toast']) {
+    const src=(await (await fetch('../../components/core/'+n+'.jsx')).text()).replace(/^import React from 'react';\s*/m,'').replace(/^export function/m,'function');
+    NS[n]=new Function('React', Babel.transform(src,{presets:['react']}).code+'\n;return '+n+';')(React);
+  }
+  return NS;
+};
+(async()=>{
+  window.CB = await window.__loadCore();
+  const src = await (await fetch('Site.jsx')).text();
+  new Function(Babel.transform(src,{presets:['react']}).code)();
+  ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(window.Site));
+})();
+</script></body></html>

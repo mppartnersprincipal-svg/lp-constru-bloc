@@ -1,0 +1,12 @@
+# Documento interno do cliente — não publicar
+Briefing_LP_Construbloc.docx
+
+# Fotos originais do iPhone (pesadas e com GPS no EXIF) — o site usa as versões WebP em site/assets/img
+Fotos Loja/*.HEIC
+Fotos Loja/*.heic
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
+~$*
