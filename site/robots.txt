@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lp-constru-bloc.vercel.app/sitemap.xml

@@ -5,6 +5,9 @@ Landing page da Construbloc — material de construção em Goiânia. Projeto da
 ## Estrutura
 
 - `site/` — a página publicada: `index.html` (HTML + CSS + JS inline) e `assets/img/` (imagens otimizadas)
+- `site/areia.html` → `/areia` e `site/brita.html` → `/brita` — páginas de produto para os grupos de anúncio do Google Ads (areia e brita). Preços vêm de `Areias e Britas.txt`; ao mudar um preço, atualize o hero, os cards, o FAQ visível, o JSON-LD (`Product`/`FAQPage`), as constantes da calculadora no script e o `site/llms.txt`. O CSS das duas é idêntico — altere nas duas.
+- `site/sitemap.xml`, `site/robots.txt`, `site/llms.txt` — SEO e busca por IA. Atualize `lastmod` no sitemap quando uma página mudar.
+- `site/assets/img/produtos/*.svg` — texturas ilustrativas da granulação (troque por fotos reais quando houver)
 - `Copy_LP_Construbloc.md` — copy completa por seção
 - `Design System Construbloc/` — tokens, componentes e guias da marca
 - `Logos/` — arquivos originais da marca
