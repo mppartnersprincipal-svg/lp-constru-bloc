@@ -19,12 +19,9 @@
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" as="image" type="image/webp" media="(min-width:1024px)" imagesrcset="assets/img/loja-construbloc-560.webp 560w, assets/img/loja-construbloc-860.webp 860w" imagesizes="420px" fetchpriority="high">
 
-<!-- Fontes: carregamento não bloqueante (o texto aparece na hora com a fonte de fallback) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&family=Russo+One&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&family=Russo+One&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&family=Russo+One&display=swap"></noscript>
+<!-- Fontes self-hosted (subset latin, sem domínio externo). Pré-carrega só a do H1 (7 KB);
+     as demais usam fallbacks com métricas ajustadas, então a troca não gera layout shift. -->
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/russo-one-400.woff2" crossorigin>
 
 <script>document.documentElement.classList.add('js')</script>
 
@@ -46,6 +43,18 @@
 </script>
 
 <style>
+/* ============ Fontes ============ */
+@font-face{font-family:"Russo One";font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/russo-one-400.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/barlow-400.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-style:normal;font-weight:600;font-display:swap;src:url(assets/fonts/barlow-600.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/barlow-700.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:600;font-display:swap;src:url(assets/fonts/barlow-condensed-600.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/barlow-condensed-700.woff2) format("woff2")}
+/* Fallbacks com métricas ajustadas: o texto não "pula" (CLS) quando a fonte real carrega */
+@font-face{font-family:"Russo Fallback";src:local("Arial Black"),local("Arial Bold"),local("Arial"),local("Roboto");size-adjust:90.2%;ascent-override:102.7%;descent-override:30.9%;line-gap-override:0%}
+@font-face{font-family:"Barlow Fallback";src:local("Arial"),local("Roboto");size-adjust:95.8%;ascent-override:104.4%;descent-override:20.9%;line-gap-override:0%}
+@font-face{font-family:"Barlow Condensed Fallback";src:local("Arial Narrow"),local("Arial"),local("Roboto");size-adjust:67.6%;ascent-override:148%;descent-override:29.6%;line-gap-override:0%}
+
 /* ============ Tokens (Design System Construbloc) ============ */
 :root{
   --cb-blue-900:#000838;--cb-blue-800:#000060;--cb-blue-700:#001060;--cb-blue-600:#002080;--cb-blue-500:#1B3A9E;--cb-blue-100:#E4E8F5;--cb-blue-50:#F1F3FA;
@@ -53,9 +62,9 @@
   --cb-ink-900:#0E1220;--cb-ink-700:#2A3042;--cb-ink-500:#5B6275;--cb-ink-300:#A2A8B8;--cb-line-200:#DCE0EA;--cb-surface-100:#F3F4F8;--cb-white:#fff;
   --wa:#25D366;--wa-hover:#1EBE5A;--wa-active:#18A34D;--wa-ink:#062B16;
 
-  --font-display:"Russo One","Arial Black",Impact,sans-serif;
-  --font-body:"Barlow","Helvetica Neue",Arial,sans-serif;
-  --font-label:"Barlow Condensed","Arial Narrow",sans-serif;
+  --font-display:"Russo One","Russo Fallback","Arial Black",Impact,sans-serif;
+  --font-body:"Barlow","Barlow Fallback","Helvetica Neue",Arial,sans-serif;
+  --font-label:"Barlow Condensed","Barlow Condensed Fallback","Arial Narrow",sans-serif;
 
   --radius-xs:2px;--radius-sm:4px;--radius-md:6px;--radius-lg:10px;
   --shadow-sm:0 1px 2px rgba(0,8,56,.08);--shadow-md:0 6px 18px rgba(0,8,56,.12);--shadow-lg:0 16px 40px rgba(0,8,56,.18);
@@ -259,8 +268,8 @@ h4{margin:0}
 .numbers{position:relative;overflow:hidden}
 .numbers .wm{position:absolute;left:50%;bottom:-40px;transform:translateX(-50%);width:900px;max-width:none;opacity:.06;pointer-events:none}
 .stats{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.14);border-radius:var(--radius-md);overflow:hidden}
-.stat{background:var(--cb-blue-600);padding:22px 16px;text-align:center}
-.stat b{display:block;font:400 clamp(1.5rem,1rem + 2.4vw,2.5rem)/1 var(--font-display);color:var(--cb-gold-400);text-transform:uppercase;letter-spacing:.01em;white-space:nowrap}
+.stat{background:var(--cb-blue-600);padding:22px 10px;text-align:center;min-width:0}
+.stat b{display:block;font:400 clamp(1.125rem,.45rem + 3.4vw,2.5rem)/1.05 var(--font-display);color:var(--cb-gold-400);text-transform:uppercase;letter-spacing:.01em}
 .stat span{display:block;margin-top:8px;font-size:14px;line-height:1.35;color:rgba(255,255,255,.85)}
 @media (min-width:768px){.stat{padding:32px 20px}.stat span{font-size:15px}}
 @media (min-width:1024px){.stats{grid-template-columns:repeat(4,1fr)}.stat b{font-size:2.25rem}}
@@ -422,7 +431,7 @@ h4{margin:0}
 <header class="header">
   <div class="wrap">
     <a class="logo" href="#topo" aria-label="Construbloc — início">
-      <img src="assets/img/logo-color.png" width="280" height="141" alt="Construbloc — Materiais de construção e ferragista em Goiânia" fetchpriority="high">
+      <img src="assets/img/logo-color.webp" width="280" height="141" alt="Construbloc — Materiais de construção e ferragista em Goiânia" fetchpriority="high">
     </a>
     <nav class="nav" aria-label="Seções">
       <a href="#loja">A loja</a>
@@ -525,12 +534,12 @@ h4{margin:0}
     <ul class="gallery" aria-label="Fotos da loja">
       <li><figure><img src="assets/img/loja-visao-geral-640.webp" srcset="assets/img/loja-visao-geral-400.webp 400w, assets/img/loja-visao-geral-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 1" loading="lazy" decoding="async"></figure></li>
       <li><figure><img src="assets/img/loja-tintas-640.webp" srcset="assets/img/loja-tintas-400.webp 400w, assets/img/loja-tintas-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 2" loading="lazy" decoding="async"></figure></li>
-      <li><figure><img src="assets/img/loja-iluminacao-640.webp" srcset="assets/img/loja-iluminacao-400.webp 400w, assets/img/loja-iluminacao-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 3" loading="lazy" decoding="async"></figure></li>
-      <li><figure><img src="assets/img/loja-fechaduras-640.webp" srcset="assets/img/loja-fechaduras-400.webp 400w, assets/img/loja-fechaduras-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 4" loading="lazy" decoding="async"></figure></li>
-      <li><figure><img src="assets/img/loja-metais-640.webp" srcset="assets/img/loja-metais-400.webp 400w, assets/img/loja-metais-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 5" loading="lazy" decoding="async"></figure></li>
-      <li><figure><img src="assets/img/loja-ferramentas-640.webp" srcset="assets/img/loja-ferramentas-400.webp 400w, assets/img/loja-ferramentas-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 6" loading="lazy" decoding="async"></figure></li>
-      <li><figure><img src="assets/img/loja-pintura-640.webp" srcset="assets/img/loja-pintura-400.webp 400w, assets/img/loja-pintura-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 7" loading="lazy" decoding="async"></figure></li>
-      <li><figure><img src="assets/img/loja-eletrica-640.webp" srcset="assets/img/loja-eletrica-400.webp 400w, assets/img/loja-eletrica-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 8" loading="lazy" decoding="async"></figure></li>
+      <li><figure><img data-src="assets/img/loja-iluminacao-640.webp" data-srcset="assets/img/loja-iluminacao-400.webp 400w, assets/img/loja-iluminacao-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 3" loading="lazy" decoding="async"></figure></li>
+      <li><figure><img data-src="assets/img/loja-fechaduras-640.webp" data-srcset="assets/img/loja-fechaduras-400.webp 400w, assets/img/loja-fechaduras-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 4" loading="lazy" decoding="async"></figure></li>
+      <li><figure><img data-src="assets/img/loja-metais-640.webp" data-srcset="assets/img/loja-metais-400.webp 400w, assets/img/loja-metais-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 5" loading="lazy" decoding="async"></figure></li>
+      <li><figure><img data-src="assets/img/loja-ferramentas-640.webp" data-srcset="assets/img/loja-ferramentas-400.webp 400w, assets/img/loja-ferramentas-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 6" loading="lazy" decoding="async"></figure></li>
+      <li><figure><img data-src="assets/img/loja-pintura-640.webp" data-srcset="assets/img/loja-pintura-400.webp 400w, assets/img/loja-pintura-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 7" loading="lazy" decoding="async"></figure></li>
+      <li><figure><img data-src="assets/img/loja-eletrica-640.webp" data-srcset="assets/img/loja-eletrica-400.webp 400w, assets/img/loja-eletrica-640.webp 640w" sizes="(min-width:1024px) 285px, (min-width:600px) 44vw, 78vw" width="640" height="800" alt="Interior da loja de material de construção Construbloc em Vila Boa, Goiânia — foto 8" loading="lazy" decoding="async"></figure></li>
     </ul>
     <p class="gallery-hint" aria-hidden="true">Arraste para ver mais<svg class="ic"><use href="#i-arrow"/></svg></p>
     <div class="cta-row rv">
@@ -751,7 +760,7 @@ h4{margin:0}
   <div class="wrap">
     <div class="cols">
       <div>
-        <img src="assets/img/logo-white.png" width="320" height="161" alt="Construbloc" loading="lazy" decoding="async">
+        <img src="assets/img/logo-white.webp" width="320" height="161" alt="Construbloc" loading="lazy" decoding="async">
         <h2>Endereço</h2>
         <address>
           <strong style="color:#fff">Construbloc</strong><br>
@@ -828,10 +837,27 @@ h4{margin:0}
     else { t.textContent = 'Abrimos às 7h · mande sua lista pelo WhatsApp'; }
   }catch(e){}
 
+  // Galeria: fotos fora da tela (3ª em diante) só baixam quando a galeria chega perto da viewport.
+  // Sem isso o Chrome baixa todas (~450 KB) já no carregamento inicial do mobile.
+  var gallery = document.querySelector('.gallery');
+  function loadGallery(){
+    gallery.querySelectorAll('img[data-src]').forEach(function(img){
+      img.srcset = img.getAttribute('data-srcset');
+      img.src = img.getAttribute('data-src');
+      img.removeAttribute('data-src'); img.removeAttribute('data-srcset');
+    });
+  }
+
   if (!('IntersectionObserver' in window)){
+    loadGallery();
     document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
     return;
   }
+
+  var go = new IntersectionObserver(function(entries){
+    if (entries[0].isIntersecting){ loadGallery(); go.disconnect(); }
+  },{rootMargin:'400px 0px'});
+  go.observe(gallery);
 
   // Revelação suave ao rolar
   var io = new IntersectionObserver(function(entries){
