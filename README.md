@@ -19,7 +19,7 @@ Abra `site/index.html` no navegador, ou sirva a pasta `site/` com qualquer servi
 ## Antes de publicar
 
 - WhatsApp: (62) 3579-1166, em `site/index.html` como `556235791166` (constante `WA` no script e nos `href`). Telefone para ligações: (62) 3091-1091 (`tel:+556230911091`).
-- Domínio: `canonical`, `og:url`, `og:image` e o JSON-LD usam `https://lp-constru-bloc.vercel.app/`. Trocar quando houver domínio próprio.
+- Domínio: `https://www.construbloc.site/` (o domínio sem www redireciona para o www). `canonical`, `og:url`, `og:image`, JSON-LD, `sitemap.xml`, `robots.txt` e `llms.txt` usam esse endereço.
 
 ## Analytics (GTM + GA4 + Google Ads)
 

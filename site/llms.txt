@@ -6,9 +6,9 @@ Preços atualizados em 28/09/2026. Os valores por metro cúbico são para pagame
 
 ## Páginas
 
-- [Areia em Goiânia](https://lp-constru-bloc.vercel.app/areia): areia fina, média e grossa. Saco de 20 kg: R$ 8,00. Por m³ no PIX: fina R$ 225,00, média R$ 225,00, grossa R$ 247,50. Inclui guia de qual areia usar em cada serviço e perguntas frequentes.
-- [Brita em Goiânia](https://lp-constru-bloc.vercel.app/brita): brita 0 (pedrisco, 4,8 a 9,5 mm) e brita 1 (9,5 a 19 mm). Saco de 20 kg: R$ 9,00. Por m³ no PIX: brita 0 R$ 236,00, brita 1 R$ 214,50. Inclui guia de qual brita usar e perguntas frequentes.
-- [Página inicial](https://lp-constru-bloc.vercel.app/): linha completa de material de construção, serviços de entrega (inclusive noturna pré-agendada), formas de pagamento e contato.
+- [Areia em Goiânia](https://www.construbloc.site/areia): areia fina, média e grossa. Saco de 20 kg: R$ 8,00. Por m³ no PIX: fina R$ 225,00, média R$ 225,00, grossa R$ 247,50. Inclui guia de qual areia usar em cada serviço e perguntas frequentes.
+- [Brita em Goiânia](https://www.construbloc.site/brita): brita 0 (pedrisco, 4,8 a 9,5 mm) e brita 1 (9,5 a 19 mm). Saco de 20 kg: R$ 9,00. Por m³ no PIX: brita 0 R$ 236,00, brita 1 R$ 214,50. Inclui guia de qual brita usar e perguntas frequentes.
+- [Página inicial](https://www.construbloc.site/): linha completa de material de construção, serviços de entrega (inclusive noturna pré-agendada), formas de pagamento e contato.
 
 ## Fatos rápidos
 
