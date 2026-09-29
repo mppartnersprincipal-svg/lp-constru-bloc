@@ -25,21 +25,12 @@
 
 <script>document.documentElement.classList.add('js')</script>
 
-<!-- Google Analytics 4: cole o ID de métricas da propriedade (G-XXXXXXXXXX) em GA_ID.
-     Enquanto estiver vazio, nada é carregado; os eventos de clique ficam só no dataLayer. -->
+<!-- Google Tag Manager (GTM-WXVXVZSF). GA4, conversões do Google Ads e eventos são configurados no contêiner
+     (importar tracking/gtm-construbloc.json). A página só envia eventos ao dataLayer, nunca chama gtag direto. -->
 <script>
-(function(){
-  var GA_ID = '';
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function(){ window.dataLayer.push(arguments); };
-  if (!/^G-[A-Z0-9]+$/.test(GA_ID)) return;
-  var s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-  document.head.appendChild(s);
-  window.gtag('js', new Date());
-  window.gtag('config', GA_ID);
-})();
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({ page_type: 'home' });
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WXVXVZSF');
 </script>
 
 <style>
@@ -381,6 +372,7 @@ h4{margin:0}
 </script>
 </head>
 <body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXVXVZSF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ============ Ícones (Lucide, inline para zero requisições) ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -821,17 +813,21 @@ h4{margin:0}
     a.href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(a.getAttribute('data-wa'));
   });
 
-  // Rastreamento de cliques (GA4 + dataLayer para GTM). Todo link com data-cta vira evento:
-  //   whatsapp_click → links wa.me · phone_click → links tel: · cta_click → demais
-  // Parâmetro cta_location = valor do data-cta (ex.: "hero", "flutuante-tel").
+  // Eventos para o GTM (GA4 e Google Ads são configurados no contêiner, não aqui).
+  //   whatsapp_click → links wa.me · phone_click → links tel: · cta_click → demais, com cta_location = data-cta
+  //   faq_open → pergunta do FAQ aberta pelo usuário, com faq_question
+  function track(name, params){ window.dataLayer.push(Object.assign({ event: name }, params)); }
   document.addEventListener('click', function(ev){
-    var a = ev.target.closest && ev.target.closest('a[data-cta]');
-    if (!a) return;
-    var href = a.getAttribute('href') || '';
-    var name = /wa\.me/.test(href) ? 'whatsapp_click' : /^tel:/.test(href) ? 'phone_click' : 'cta_click';
-    var params = { cta_location: a.getAttribute('data-cta'), link_url: href.split('?')[0] };
-    window.gtag('event', name, params);
-    window.dataLayer.push(Object.assign({ event: name }, params));
+    if (!ev.target.closest) return;
+    var a = ev.target.closest('a[data-cta]');
+    if (a){
+      var href = a.getAttribute('href') || '';
+      var name = /wa\.me/.test(href) ? 'whatsapp_click' : /^tel:/.test(href) ? 'phone_click' : 'cta_click';
+      track(name, { cta_location: a.getAttribute('data-cta'), link_url: href.split('?')[0] });
+      return;
+    }
+    var q = ev.target.closest('.faq-list summary');
+    if (q && !q.parentNode.open) track('faq_open', { faq_question: q.textContent.trim().slice(0, 100) });
   });
 
   // Status "aberto agora" no fuso de Goiânia (America/Sao_Paulo), 7h às 19h todos os dias.

@@ -21,26 +21,35 @@ Abra `site/index.html` no navegador, ou sirva a pasta `site/` com qualquer servi
 - WhatsApp: (62) 3579-1166, em `site/index.html` como `556235791166` (constante `WA` no script e nos `href`). Telefone para ligações: (62) 3091-1091 (`tel:+556230911091`).
 - Domínio: `canonical`, `og:url`, `og:image` e o JSON-LD usam `https://lp-constru-bloc.vercel.app/`. Trocar quando houver domínio próprio.
 
-## Analytics (GA4)
+## Analytics (GTM + GA4 + Google Ads)
 
-1. No Google Analytics, crie a propriedade e um fluxo de dados Web para o domínio do site. Copie o **ID de métricas** (`G-XXXXXXXXXX`).
-2. Em `site/index.html`, no `<head>`, cole o ID em `var GA_ID = '';`. Com o campo vazio, o GA não carrega.
-3. Publique. Visualizações de página, rolagem, cliques externos e UTMs de campanha são medidos automaticamente (medição otimizada do GA4).
+As 3 páginas carregam só o **Google Tag Manager** (`GTM-WXVXVZSF`) e enviam eventos ao `dataLayer`. GA4 (`G-0J96MVPZ7W`) e as conversões do Google Ads (`AW-11368504142`) são configurados no contêiner, nunca direto na página: não adicione `gtag.js` no HTML, senão tudo conta em dobro.
 
-Eventos de clique enviados pela página (todo link com `data-cta`):
+Cada página define `page_type` (`home`, `areia`, `brita`) antes do GTM carregar.
 
-| Evento | Quando | Parâmetros |
+| Evento (dataLayer) | Quando | Parâmetros |
 |---|---|---|
-| `whatsapp_click` | clique em qualquer link do WhatsApp | `cta_location` (ex.: `hero`, `flutuante`, `barra-mobile`), `link_url` |
-| `phone_click` | clique em qualquer link de ligação | `cta_location` (ex.: `flutuante-tel`, `barra-mobile-tel`, `topbar-tel`), `link_url` |
-| `cta_click` | demais links rastreados (Mercado Livre) | `cta_location`, `link_url` |
+| `whatsapp_click` | clique em qualquer link do WhatsApp (`data-cta` + `wa.me`) | `cta_location` (ex.: `hero`, `areia-calculadora`), `link_url` |
+| `phone_click` | clique em qualquer link de ligação (`data-cta` + `tel:`) | `cta_location` (ex.: `flutuante-tel`, `topbar-tel`), `link_url` |
+| `cta_click` | demais links com `data-cta` (Mercado Livre, links entre páginas) | `cta_location`, `link_url` |
+| `calculator_use` | usuário termina de editar a calculadora (areia/brita), sem repetir os mesmos valores | `product`, `product_type`, `usage` (só brita), `volume_m3` |
+| `faq_open` | usuário abre uma pergunta do FAQ | `faq_question` |
+| `scroll_depth` | gerado pelo GTM (acionador de rolagem 25/50/75/90%) | `percent_scrolled` |
 
-No GA4, depois do primeiro clique de teste:
-- **Admin → Eventos**: marque `whatsapp_click` e `phone_click` como **evento-chave** (conversão).
-- **Admin → Definições personalizadas**: crie a dimensão de evento `cta_location` para ver qual botão gerou cada contato.
-- Para Google Ads, importe esses eventos-chave como conversões.
+### Contêiner GTM
 
-Os mesmos eventos também vão para o `dataLayer` (`{event, cta_location, link_url}`). Se preferir Google Tag Manager, instale o container do GTM, deixe `GA_ID` vazio e configure a tag GA4 por lá, para não contar tudo em dobro.
+`tracking/gtm-construbloc.json` tem o contêiner completo. Para instalar: GTM → **Administrador → Importar contêiner** → escolher o arquivo → espaço de trabalho existente → **Mesclar** (renomear conflitos) → **Enviar/Publicar**.
+
+Conteúdo: tag do Google (GA4), uma tag de evento GA4 para cada evento acima, **Vinculador de conversões** e duas tags de conversão do Google Ads:
+- **Contato WhatsApp** (`37BUCND_0YodEM629qwq`) dispara em `whatsapp_click`
+- **Clique para Ligar** (`rPYMCPaj14odEM629qwq`) dispara em `phone_click`
+
+### Depois de publicar
+
+- **GA4 → Admin → Eventos**: marque `whatsapp_click` e `phone_click` como **evento-chave**.
+- **GA4 → Admin → Definições personalizadas**: crie dimensões de evento para `cta_location`, `page_type`, `product`, `product_type`, `faq_question` e a métrica `volume_m3`.
+- **Google Ads**: as conversões vêm das tags do GTM. **Não importe** os eventos-chave do GA4 como conversão primária, senão cada contato conta duas vezes. Em cada ação, use contagem **"Uma"** por clique no anúncio.
+- **Testar**: GTM → **Visualizar** (Tag Assistant) no site publicado, clique num botão de WhatsApp e confira se as tags GA4 e Ads dispararam.
 
 ## Deploy (Vercel)
 

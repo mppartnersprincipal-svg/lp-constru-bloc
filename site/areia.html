@@ -23,20 +23,12 @@
 
 <script>document.documentElement.classList.add('js')</script>
 
-<!-- Google Analytics 4: mesmo ID da página inicial (G-XXXXXXXXXX). Vazio = não carrega. -->
+<!-- Google Tag Manager (GTM-WXVXVZSF). GA4, conversões do Google Ads e eventos são configurados no contêiner
+     (importar tracking/gtm-construbloc.json). A página só envia eventos ao dataLayer, nunca chama gtag direto. -->
 <script>
-(function(){
-  var GA_ID = '';
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function(){ window.dataLayer.push(arguments); };
-  if (!/^G-[A-Z0-9]+$/.test(GA_ID)) return;
-  var s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-  document.head.appendChild(s);
-  window.gtag('js', new Date());
-  window.gtag('config', GA_ID);
-})();
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({ page_type: 'areia' });
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WXVXVZSF');
 </script>
 
 <!-- CSS inline de propósito (como na página inicial): página de anúncio, visita única, sem requisição extra antes do primeiro render. -->
@@ -431,6 +423,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600
 </script>
 </head>
 <body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXVXVZSF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-wa" viewBox="0 0 24 24"><path class="wa-glyph" fill="currentColor" stroke="none" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.57-.35zM12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 7c0 5.45-4.44 9.88-9.88 9.88zm8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.41z"/></symbol>
@@ -818,15 +811,21 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600
 
   document.querySelectorAll('[data-wa]').forEach(function(a){ a.href = waHref(a.getAttribute('data-wa')); });
 
-  // Cliques rastreados (GA4 + dataLayer): whatsapp_click / phone_click / cta_click, com cta_location = data-cta.
+  // Eventos para o GTM (GA4 e Google Ads são configurados no contêiner, não aqui).
+  //   whatsapp_click → links wa.me · phone_click → links tel: · cta_click → demais, com cta_location = data-cta
+  //   faq_open → pergunta do FAQ aberta pelo usuário, com faq_question
+  function track(name, params){ window.dataLayer.push(Object.assign({ event: name }, params)); }
   document.addEventListener('click', function(ev){
-    var a = ev.target.closest && ev.target.closest('a[data-cta]');
-    if (!a) return;
-    var href = a.getAttribute('href') || '';
-    var name = /wa\.me/.test(href) ? 'whatsapp_click' : /^tel:/.test(href) ? 'phone_click' : 'cta_click';
-    var params = { cta_location: a.getAttribute('data-cta'), link_url: href.split('?')[0] };
-    window.gtag('event', name, params);
-    window.dataLayer.push(Object.assign({ event: name }, params));
+    if (!ev.target.closest) return;
+    var a = ev.target.closest('a[data-cta]');
+    if (a){
+      var href = a.getAttribute('href') || '';
+      var name = /wa\.me/.test(href) ? 'whatsapp_click' : /^tel:/.test(href) ? 'phone_click' : 'cta_click';
+      track(name, { cta_location: a.getAttribute('data-cta'), link_url: href.split('?')[0] });
+      return;
+    }
+    var q = ev.target.closest('.faq-list summary');
+    if (q && !q.parentNode.open) track('faq_open', { faq_question: q.textContent.trim().slice(0, 100) });
   });
 
   // Status "aberto agora" (7h às 19h, fuso de Goiânia)
@@ -853,7 +852,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600
       ['r-vol','r-sacos','r-custo-saco','r-custo-m3'].forEach(function(id){ $(id).textContent = '-'; });
       $('r-best').textContent = 'Preencha a área e a espessura para ver a estimativa.';
       link.href = waHref('Olá! Quero ajuda para calcular a areia da minha obra.');
-      return;
+      return 0;
     }
     var sacos = Math.ceil(vol * KG_M3 / SACO_KG);
     var custoSaco = sacos * PRECO_SACO, custoM3 = vol * PRECO_M3[tipo];
@@ -865,8 +864,19 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600
       ? 'Pelo m³ você economiza cerca de ' + brl.format(custoSaco - custoM3) + ' (sem contar o frete). Confirme a quantidade mínima com o vendedor.'
       : 'Para esse volume, a areia ensacada é a opção mais prática.';
     link.href = waHref('Olá! Fiz o cálculo na página de areia: ' + NOME[tipo] + ', ' + num.format(area) + ' m² × ' + num.format(esp) + ' cm ≈ ' + num.format(vol) + ' m³ (' + sacos + ' sacos de 20 kg). Pode me passar o orçamento com entrega?');
+    return vol;
   }
   ['c-tipo','c-area','c-esp'].forEach(function(id){ $(id).addEventListener('input', calc); });
+  var lastCalc = '';
+  ['c-tipo','c-area','c-esp'].forEach(function(id){ $(id).addEventListener('change', function(){
+    var vol = calc();
+    if (!vol) return;
+    var p = { product: 'areia', product_type: $('c-tipo').value, volume_m3: Math.round(vol * 100) / 100 };
+    var key = JSON.stringify(p);
+    if (key === lastCalc) return;
+    lastCalc = key;
+    track('calculator_use', p);
+  }); });
   $('calc-form').addEventListener('submit', function(e){ e.preventDefault(); });
   calc();
 
