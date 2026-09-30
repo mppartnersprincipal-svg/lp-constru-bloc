@@ -63,14 +63,14 @@ window.dataLayer.push({ page_type: 'home' });
   --focus-ring:0 0 0 3px rgba(224,176,0,.55);
   --gradient-gold:linear-gradient(90deg,#F8F050 0%,#E0B000 100%);
 
-  --container-max:1200px;--gutter:16px;--section-y:56px;--roof:24px;--header-h:64px;
+  --container-max:1200px;--gutter:16px;--section-y:56px;--roof:24px;--header-h:64px;--hstrip:44px;
 }
 @media (min-width:768px){:root{--gutter:24px;--section-y:72px;--roof:40px}}
-@media (min-width:1024px){:root{--section-y:88px;--roof:48px;--header-h:76px}}
+@media (min-width:1024px){:root{--section-y:88px;--roof:48px;--header-h:76px;--hstrip:0px}}
 
 /* ============ Base ============ */
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--header-h) + 12px)}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--header-h) + var(--hstrip) + 12px)}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 body{margin:0;font-family:var(--font-body);font-size:16px;line-height:1.55;color:var(--cb-ink-700);background:#fff;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 img,svg{display:block;max-width:100%}
@@ -142,6 +142,27 @@ h4{margin:0}
   .nav a:hover{border-color:var(--cb-gold-500)}
 }
 .header .btn{min-height:44px;padding:0 14px;font-size:14px}
+/* Atalhos Areia/Brita: faixa no celular, botões dourados no desktop */
+.hprod{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--cb-line-200);background:var(--cb-gold-500)}
+.hprod a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:var(--hstrip);color:var(--cb-blue-900);font:700 14px var(--font-body);text-transform:uppercase;letter-spacing:.04em}
+.hprod a+a{border-left:1px solid rgba(0,8,56,.18)}
+.hprod a:hover{background:var(--cb-gold-600)}
+.hprod .ic{width:18px;height:18px}
+.nav .nav-prod{display:none}
+@media (min-width:1024px){
+  .hprod{display:none}
+  .nav{align-items:center;gap:22px}
+  .nav .nav-prod{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:0;border-radius:var(--radius-sm);background:var(--cb-gold-500);color:var(--cb-blue-900)}
+  .nav .nav-prod+.nav-prod{margin-left:-12px}
+  .nav .nav-prod:hover{background:var(--cb-gold-600)}
+  .nav .nav-prod .ic{width:16px;height:16px}
+  .nav a{white-space:nowrap}
+}
+@media (min-width:1024px) and (max-width:1279px){
+  .nav{gap:16px;font-size:13px}
+  .nav .nav-prod{padding:8px 10px}
+  .nav .nav-prod+.nav-prod{margin-left:-8px}
+}
 .header .btn .full{display:none}
 @media (min-width:480px){.header .btn .full{display:inline}.header .btn .short{display:none}}
 
@@ -426,6 +447,8 @@ h4{margin:0}
       <img src="assets/img/logo-color.webp" width="280" height="141" alt="Construbloc, materiais de construção e ferragista em Goiânia" fetchpriority="high">
     </a>
     <nav class="nav" aria-label="Seções">
+      <a class="nav-prod" href="/areia" data-cta="header-areia"><svg class="ic" aria-hidden="true"><use href="#i-mountain"/></svg>Areia</a>
+      <a class="nav-prod" href="/brita" data-cta="header-brita"><svg class="ic" aria-hidden="true"><use href="#i-mountain"/></svg>Brita</a>
       <a href="#loja">A loja</a>
       <a href="#produtos">Produtos</a>
       <a href="#servicos">Serviços</a>
@@ -436,6 +459,10 @@ h4{margin:0}
       <svg class="ic" aria-hidden="true"><use href="#i-wa"/></svg><span class="short">Orçamento</span><span class="full">Pedir orçamento</span>
     </a>
   </div>
+  <nav class="hprod" aria-label="Areia e brita ensacadas">
+    <a href="/areia" data-cta="header-areia-m"><svg class="ic" aria-hidden="true"><use href="#i-mountain"/></svg>Areia ensacada</a>
+    <a href="/brita" data-cta="header-brita-m"><svg class="ic" aria-hidden="true"><use href="#i-mountain"/></svg>Brita ensacada</a>
+  </nav>
 </header>
 
 <main id="conteudo">
