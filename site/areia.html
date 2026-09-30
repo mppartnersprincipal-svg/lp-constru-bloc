@@ -405,7 +405,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600
       "@id":"https://www.construbloc.site/areia#faq",
       "mainEntity":[
         {"@type":"Question","name":"Quanto custa a areia em Goiânia na Construbloc?","acceptedAnswer":{"@type":"Answer","text":"O saco de 20 kg de areia fina, média ou grossa custa R$ 8,00. O frete é informado no orçamento, conforme bairro e quantidade."}},
-        {"@type":"Question","name":"Quantos sacos de 20 kg dá 1 m³ de areia?","acceptedAnswer":{"@type":"Answer","text":"Cerca de 75 sacos. A areia seca pesa em torno de 1.500 kg por metro cúbico, então 1 m³ equivale a aproximadamente 75 sacos de 20 kg. O número varia com a umidade e a granulação."}},
+        {"@type":"Question","name":"Quantos sacos de 20 kg dá 1 m³ de areia?","acceptedAnswer":{"@type":"Answer","text":"Cerca de 70 sacos. Na Construbloc, 1 m³ de areia rende aproximadamente 70 sacos de 20 kg. É uma conta aproximada, que varia com a umidade e a granulação."}},
         {"@type":"Question","name":"Qual a diferença entre areia fina, média e grossa?","acceptedAnswer":{"@type":"Answer","text":"É o tamanho do grão. A areia fina tem grãos pequenos e deixa a superfície lisa, por isso vai no reboco de acabamento. A média é a mais versátil: reboco, assentamento de tijolo e contrapiso. A grossa tem grãos maiores e dá resistência ao concreto, ao chapisco e ao contrapiso."}},
         {"@type":"Question","name":"Qual areia usar para reboco?","acceptedAnswer":{"@type":"Answer","text":"Para o reboco comum (emboço), use areia média. Para uma camada final mais lisa, de acabamento, use areia fina. No chapisco, que vem antes do reboco, use areia grossa."}},
         {"@type":"Question","name":"Qual areia usar para concreto e contrapiso?","acceptedAnswer":{"@type":"Answer","text":"Para concreto, use areia grossa ou média, junto com cimento e brita. Para contrapiso, areia média ou grossa."}},
@@ -696,7 +696,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600
     </div>
     <div class="faq-list">
       <details name="faq" open><summary><h3>Quanto custa a areia em Goiânia na Construbloc?</h3><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></summary><div class="ans">O saco de 20 kg de areia fina, média ou grossa custa <strong>R$ 8,00</strong>. O frete é informado no orçamento, conforme bairro e quantidade.</div></details>
-      <details name="faq"><summary><h3>Quantos sacos de 20 kg dá 1 m³ de areia?</h3><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></summary><div class="ans">Cerca de <strong>75 sacos</strong>. A areia seca pesa em torno de 1.500 kg por metro cúbico, então 1 m³ equivale a aproximadamente 75 sacos de 20 kg. O número varia com a umidade e a granulação.</div></details>
+      <details name="faq"><summary><h3>Quantos sacos de 20 kg dá 1 m³ de areia?</h3><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></summary><div class="ans">Cerca de <strong>70 sacos</strong>. Na Construbloc, 1 m³ de areia rende aproximadamente 70 sacos de 20 kg. É uma conta aproximada, que varia com a umidade e a granulação.</div></details>
       <details name="faq"><summary><h3>Qual a diferença entre areia fina, média e grossa?</h3><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></summary><div class="ans">É o tamanho do grão. A <strong>fina</strong> tem grãos pequenos e deixa a superfície lisa, por isso vai no reboco de acabamento. A <strong>média</strong> é a mais versátil: reboco, assentamento de tijolo e contrapiso. A <strong>grossa</strong> tem grãos maiores e dá resistência ao concreto, ao chapisco e ao contrapiso.</div></details>
       <details name="faq"><summary><h3>Qual areia usar para reboco?</h3><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></summary><div class="ans">Para o reboco comum (emboço), use <strong>areia média</strong>. Para uma camada final mais lisa, de acabamento, use <strong>areia fina</strong>. No chapisco, que vem antes do reboco, use <strong>areia grossa</strong>.</div></details>
       <details name="faq"><summary><h3>Qual areia usar para concreto e contrapiso?</h3><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></summary><div class="ans">Para concreto, use <strong>areia grossa ou média</strong>, junto com cimento e <a href="/brita">brita</a>. Para contrapiso, <strong>areia média ou grossa</strong>.</div></details>
@@ -825,8 +825,8 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600
     else { t.textContent = 'Abrimos às 7h · peça pelo WhatsApp'; }
   }catch(e){}
 
-  // Calculadora: área × espessura → m³ → sacos de 20 kg. Densidade média da areia seca ≈ 1.500 kg/m³.
-  var KG_M3 = 1500, SACO_KG = 20, PRECO_SACO = 8;
+  // Calculadora: área × espessura → m³ → sacos de 20 kg. Conta da loja: 1 m³ de areia ≈ 70 sacos.
+  var SACOS_M3 = 70, PRECO_SACO = 8;
   var NOME = { fina: 'areia fina', media: 'areia média', grossa: 'areia grossa' };
   var brl = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
   var num = new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2});
@@ -842,7 +842,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600
       link.href = waHref('Olá! Quero ajuda para calcular a areia da minha obra.');
       return 0;
     }
-    var sacos = Math.ceil(vol * KG_M3 / SACO_KG);
+    var sacos = Math.ceil(vol * SACOS_M3);
     var custoSaco = sacos * PRECO_SACO;
     $('r-vol').textContent = num.format(vol) + ' m³';
     $('r-sacos').textContent = sacos + (sacos === 1 ? ' saco' : ' sacos');
