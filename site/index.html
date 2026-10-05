@@ -391,6 +391,8 @@ h4{margin:0}
   "sameAs":["https://www.instagram.com/construbloc_/","https://www.mercadolivre.com.br/loja/construbloc"]
 }
 </script>
+<!-- Coletor first-party do /dashboard (anônimo, roda em paralelo ao GTM; ver DASHBOARD.md) -->
+<script src="/js/tracker.js" defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXVXVZSF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -843,7 +845,10 @@ h4{margin:0}
   // Eventos para o GTM (GA4 e Google Ads são configurados no contêiner, não aqui).
   //   whatsapp_click → links wa.me · phone_click → links tel: · cta_click → demais, com cta_location = data-cta
   //   faq_open → pergunta do FAQ aberta pelo usuário, com faq_question
-  function track(name, params){ window.dataLayer.push(Object.assign({ event: name }, params)); }
+  function track(name, params){
+    window.dataLayer.push(Object.assign({ event: name }, params));
+    if (window.cbCollect) window.cbCollect(name, params); // espelho no coletor do /dashboard (js/tracker.js)
+  }
   document.addEventListener('click', function(ev){
     if (!ev.target.closest) return;
     var a = ev.target.closest('a[data-cta]');

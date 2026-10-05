@@ -14,7 +14,7 @@ Landing page da Construbloc — material de construção em Goiânia. Projeto da
 
 ## Rodar localmente
 
-Abra `site/index.html` no navegador, ou sirva a pasta `site/` com qualquer servidor estático.
+Abra `site/index.html` no navegador, ou rode `npm run dev` (site + `/api` + `/dashboard` em http://localhost:4173, lê `.env.local`).
 
 ## Antes de publicar
 
@@ -51,6 +51,10 @@ Conteúdo: tag do Google (GA4), uma tag de evento GA4 para cada evento acima, **
 - **Google Ads**: as conversões vêm das tags do GTM. **Não importe** os eventos-chave do GA4 como conversão primária, senão cada contato conta duas vezes. Em cada ação, use contagem **"Uma"** por clique no anúncio.
 - **Testar**: GTM → **Visualizar** (Tag Assistant) no site publicado, clique num botão de WhatsApp e confira se as tags GA4 e Ads dispararam.
 
+## Dashboard first-party (/dashboard)
+
+Painel próprio de comportamento dos visitantes, com login por senha, no mesmo modelo da LP Gaspar Lopes. O coletor `site/js/tracker.js` roda em paralelo ao GTM (anônimo, sem cookies) e grava no Supabase via `api/` (Vercel Functions). Inclui calculadora (quem calcula volume de caminhão), WhatsApp e ligação por `cta_location` e a seção Google Ads (só leitura). Arquitetura, variáveis de ambiente, LGPD e Google Ads: **`DASHBOARD.md`**. Local: `npm run dev` e `npm test`.
+
 ## Deploy (Vercel)
 
-O `vercel.json` na raiz publica a pasta `site/` como site estático (sem build). Cada push no `main` gera um deploy de produção.
+O `vercel.json` na raiz publica a pasta `site/` como site estático (sem build) e a pasta `api/` como Vercel Functions. Cada push no `main` gera um deploy de produção.

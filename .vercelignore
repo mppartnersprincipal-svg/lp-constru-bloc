@@ -1,0 +1,22 @@
+# Só site/ (estático) e api/ (Functions) vão para a Vercel. Material interno fica fora do deploy.
+/supabase/
+/tracking/
+/tests/
+/scripts/
+/Fotos Loja/
+/Logos/
+/Design System Construbloc/
+/Areias e Britas.txt
+/Copy_LP_Construbloc.md
+/Briefing_LP_Construbloc.docx
+/README.md
+/CLAUDE.md
+/MEMORIA.md
+/DASHBOARD.md
+/.env.example
+/.gitignore
+node_modules/
+*.docx
+*.pdf
+*.HEIC
+*.heic

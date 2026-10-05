@@ -10,11 +10,14 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - Calculadora: areia 70 sacos/m³, brita 75 sacos/m³.
 - WhatsApp (62) 3579-1166; ligação (62) 3091-1091.
 - Fotos de produto: Wikimedia Commons (domínio público/CC0), formato 16:7, WebP 640/960.
+- Dashboard /dashboard: tabelas `construbloc_*` no Supabase compartilhado (Sólida/Gaspar), sem banner de cookies (regra da Gaspar para "não respondeu"). Volume de caminhão = 3 m³ ou mais (`TRUCK_M3`). Filtro de página = página de entrada.
 
 ## Pendências
 
 - Confirmar no GA4: `whatsapp_click` e `phone_click` como evento-chave + dimensões personalizadas (ver README).
 - Testar tags no GTM Preview no site publicado.
+- Dashboard: rodar a migration `0001_construbloc_analytics.sql`, cadastrar variáveis na Vercel (Supabase, senha, Google Ads) e conferir no primeiro deploy que `api/` vira Functions com `outputDirectory: site`.
+- Banner de cookies + Política de Privacidade (LGPD).
 
 ## Histórico
 
@@ -34,3 +37,6 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - feat: links Areia/Brita no header da home; remoção de venda a granel/m³ das páginas e do llms.txt.
 - fix: fatores da calculadora corrigidos (estavam invertidos) para areia 70 / brita 75.
 - docs: criados `CLAUDE.md` e `MEMORIA.md` para manter contexto entre conversas.
+
+### 2026-10-05
+- feat: dashboard first-party em /dashboard (coletor `site/js/tracker.js`, `api/`, migration, Google Ads só leitura, testes; ver `DASHBOARD.md`). Coletor espelha o dataLayer sem alterar GTM.
