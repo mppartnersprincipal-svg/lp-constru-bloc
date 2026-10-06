@@ -16,7 +16,7 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 - Confirmar no GA4: `whatsapp_click` e `phone_click` como evento-chave + dimensões personalizadas (ver README).
 - Testar tags no GTM Preview no site publicado.
-- Dashboard: rodar a migration `0001_construbloc_analytics.sql`, cadastrar variáveis na Vercel (Supabase, senha, Google Ads, GA4: conta de serviço como Leitor + ID numérico da propriedade) e conferir no primeiro deploy que `api/` vira Functions com `outputDirectory: site`.
+- Dashboard: rodar a migration `0001_construbloc_analytics.sql`, cadastrar variáveis na Vercel (Supabase, senha, Google Ads, GA4: reusar conta de serviço dashboard-ga4@ como Leitor + ID numérico da propriedade) e conferir no primeiro deploy que `api/` vira Functions com `outputDirectory: site`.
 - Banner de cookies + Política de Privacidade (LGPD).
 
 ## Histórico

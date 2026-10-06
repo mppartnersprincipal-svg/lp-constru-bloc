@@ -68,6 +68,12 @@ test("missing variables show a connection state without contacting Google", asyn
   assert.equal(requests.length, 0);
 });
 
+test("accepts GOOGLE_SERVICE_ACCOUNT_JSON (same variable as the other dashboards)", async (t) => {
+  mockGoogle(t);
+  const report = await fetchGa4Report(range, { GA4_PROPERTY_ID: env.GA4_PROPERTY_ID, GOOGLE_SERVICE_ACCOUNT_JSON: env.GA4_SERVICE_ACCOUNT_JSON });
+  assert.equal(report.status, "ready");
+});
+
 test("rejects measurement IDs and broken service account JSON before contacting Google", async (t) => {
   const requests = mockGoogle(t);
   assertSafeError(await fetchGa4Report(range, { ...env, GA4_PROPERTY_ID: "G-0J96MVPZ7W" }), /ID numérico/);

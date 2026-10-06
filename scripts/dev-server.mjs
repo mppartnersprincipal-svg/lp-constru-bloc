@@ -44,4 +44,4 @@ http.createServer(async (req, res) => {
   if (!file.startsWith(SITE) || !existsSync(file) || statSync(file).isDirectory()) { res.writeHead(404); return res.end('404'); }
   res.setHeader('Content-Type', MIME[path.extname(file).toLowerCase()] || 'application/octet-stream');
   res.end(readFileSync(file));
-}).listen(PORT, () => console.log(`dev-server: http://localhost:${PORT}  (api: ${process.env.SUPABASE_URL ? 'Supabase ok' : 'SEM Supabase'}; login: ${process.env.DASHBOARD_PASSWORD ? 'ok' : 'SEM senha'}; Google Ads: ${process.env.GOOGLE_ADS_REFRESH_TOKEN ? 'ok' : 'pendente'}; GA4: ${process.env.GA4_SERVICE_ACCOUNT_JSON ? 'ok' : 'pendente'})`));
+}).listen(PORT, () => console.log(`dev-server: http://localhost:${PORT}  (api: ${process.env.SUPABASE_URL ? 'Supabase ok' : 'SEM Supabase'}; login: ${process.env.DASHBOARD_PASSWORD ? 'ok' : 'SEM senha'}; Google Ads: ${process.env.GOOGLE_ADS_REFRESH_TOKEN ? 'ok' : 'pendente'}; GA4: ${(process.env.GA4_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_SERVICE_ACCOUNT_JSON) ? 'ok' : 'pendente'})`));

@@ -110,7 +110,8 @@ function buildRequests(current, previous) {
  */
 export async function fetchGa4Report(range, env = process.env) {
   const propertyId = env.GA4_PROPERTY_ID?.trim().replace(/^properties\//, '');
-  const rawAccount = env.GA4_SERVICE_ACCOUNT_JSON?.trim();
+  // Aceita o mesmo nome do dashboard da LP Construção (mesma conta de serviço dashboard-ga4@).
+  const rawAccount = (env.GA4_SERVICE_ACCOUNT_JSON || env.GOOGLE_SERVICE_ACCOUNT_JSON)?.trim();
 
   if (!propertyId || !rawAccount) {
     return {

@@ -79,11 +79,11 @@ páginas de entrada (top 10). Uma única chamada `batchRunReports` (5 relatório
 
 ### Configurar a conexão
 
-1. No Google Cloud (mesmo projeto do OAuth do Ads serve), ative a **Google Analytics Data API**.
-2. Crie uma **conta de serviço** (IAM → Contas de serviço) e gere uma **chave JSON**.
-3. No GA4: Administrador → Gerenciamento de acesso à propriedade → adicione o e-mail da conta de serviço (`...@...iam.gserviceaccount.com`) como **Leitor**.
-4. Pegue o **ID da propriedade** (Administrador → Detalhes da propriedade; número, não o `G-0J96MVPZ7W`).
-5. Cadastre `GA4_PROPERTY_ID` e `GA4_SERVICE_ACCOUNT_JSON` (o conteúdo inteiro do arquivo JSON) na Vercel e faça **Redeploy**.
+Reaproveita a **mesma conta de serviço** do dashboard da LP Construção (`dashboard-ga4@...`; a Data API já está ativa nesse projeto do Google Cloud):
+
+1. No GA4 da Construbloc: Administrador → Gerenciamento de acesso à propriedade → adicione o e-mail da conta de serviço (`client_email` do JSON) como **Leitor**.
+2. Pegue o **ID da propriedade** (Administrador → Detalhes da propriedade; número, não o `G-0J96MVPZ7W`).
+3. Na Vercel, cadastre `GA4_PROPERTY_ID` e o JSON da conta de serviço em `GOOGLE_SERVICE_ACCOUNT_JSON` (mesmo valor do outro projeto; `GA4_SERVICE_ACCOUNT_JSON` também é aceito) e faça **Redeploy**.
 
 Sem as variáveis, a seção mostra **"Conexão com o GA4 pendente"**. Erros aparecem com
 mensagem segura (sem repassar a resposta do Google) e não afetam as outras seções.
@@ -112,7 +112,7 @@ Nenhuma chave vai no código nem no front. Nunca use prefixo público.
 | `GOOGLE_ADS_REFRESH_TOKEN` | refresh token gerado com esse cliente |
 | `GOOGLE_ADS_API_VERSION` | opcional; padrão `v25`. Atualizar conforme o [calendário de versões](https://developers.google.com/google-ads/api/docs/sunset-dates) |
 | `GA4_PROPERTY_ID` | ID numérico da propriedade GA4 (não o `G-`) |
-| `GA4_SERVICE_ACCOUNT_JSON` | conteúdo do JSON da chave da conta de serviço (Leitor na propriedade) (**secreto**) |
+| `GOOGLE_SERVICE_ACCOUNT_JSON` | JSON da conta de serviço `dashboard-ga4@` (o mesmo da LP Construção; Leitor na propriedade) (**secreto**). Alternativa: `GA4_SERVICE_ACCOUNT_JSON` |
 
 Sem as duas do Supabase, a coleta descarta em silêncio (a LP nunca quebra por causa de
 analytics). Sem senha/segredo, o login responde 503.
