@@ -16,7 +16,7 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 - Confirmar no GA4: `whatsapp_click` e `phone_click` como evento-chave + dimensões personalizadas (ver README).
 - Testar tags no GTM Preview no site publicado.
-- Dashboard: rodar a migration `0001_construbloc_analytics.sql`, cadastrar variáveis na Vercel (Supabase, senha, Google Ads, GA4: reusar conta de serviço dashboard-ga4@ como Leitor + ID numérico da propriedade) e conferir no primeiro deploy que `api/` vira Functions com `outputDirectory: site`.
+- Dashboard: cadastrar variáveis na Vercel (Supabase `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` faltando em 06/10; senha já ok, Google Ads, GA4: reusar conta de serviço dashboard-ga4@ como Leitor + ID numérico da propriedade) e conferir no primeiro deploy que `api/` vira Functions com `outputDirectory: site`.
 - Banner de cookies + Política de Privacidade (LGPD).
 
 ## Histórico
@@ -43,3 +43,4 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 ### 2026-10-06
 - feat: seção GA4 no /dashboard via Data API, só leitura com conta de serviço (`api/ga4.js`, `api/_lib/ga4.js`, testes) — mostra o que o GA4 mediu ao lado do coletor próprio, sem mudar o GTM.
+- chore: migration `0001_construbloc_analytics.sql` aplicada no Supabase (khipnjfbxjgvmjvyxero) — painel vazio porque as tabelas não existiam e a Vercel está sem as variáveis do Supabase (coletor descarta em silêncio).
