@@ -10,13 +10,13 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - Calculadora: areia 70 sacos/m³, brita 75 sacos/m³.
 - WhatsApp (62) 3579-1166; ligação (62) 3091-1091.
 - Fotos de produto: Wikimedia Commons (domínio público/CC0), formato 16:7, WebP 640/960.
-- Dashboard /dashboard: tabelas `construbloc_*` no Supabase compartilhado (Sólida/Gaspar), sem banner de cookies (regra da Gaspar para "não respondeu"). Volume de caminhão = 3 m³ ou mais (`TRUCK_M3`). Filtro de página = página de entrada.
+- Dashboard /dashboard: tabelas `construbloc_*` no Supabase compartilhado (Sólida/Gaspar), sem banner de cookies (regra da Gaspar para "não respondeu"). Volume de caminhão = 3 m³ ou mais (`TRUCK_M3`). Filtro de página = página de entrada. GA4 via conta de serviço da agência `dashboard-ga4@mp-dashboard-501816` (Leitor; propriedade 556611801). UTMs do Ads no sufixo do URL final de cada grupo.
 
 ## Pendências
 
 - Confirmar no GA4: `whatsapp_click` e `phone_click` como evento-chave + dimensões personalizadas (ver README).
 - Testar tags no GTM Preview no site publicado.
-- Dashboard: cadastrar variáveis na Vercel (Supabase `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` faltando em 06/10; senha já ok, Google Ads, GA4: reusar conta de serviço dashboard-ga4@ como Leitor + ID numérico da propriedade) e conferir no primeiro deploy que `api/` vira Functions com `outputDirectory: site`.
+- Dashboard: confirmar que os próximos cliques do Ads chegam com UTM (sufixo por grupo: areia-brita-goiania/areia|brita, material-construcao-perto-de-mim/material-construcao).
 - Banner de cookies + Política de Privacidade (LGPD).
 
 ## Histórico
@@ -44,3 +44,4 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 ### 2026-10-06
 - feat: seção GA4 no /dashboard via Data API, só leitura com conta de serviço (`api/ga4.js`, `api/_lib/ga4.js`, testes) — mostra o que o GA4 mediu ao lado do coletor próprio, sem mudar o GTM.
 - chore: migration `0001_construbloc_analytics.sql` aplicada no Supabase (khipnjfbxjgvmjvyxero) — painel vazio porque as tabelas não existiam e a Vercel está sem as variáveis do Supabase (coletor descarta em silêncio).
+- chore: variáveis da Vercel completas (Supabase, senha, Google Ads, GA4); as 3 fontes do /dashboard conferidas em produção.
