@@ -94,6 +94,7 @@
     @media(min-width:900px){.g-2{grid-template-columns:2fr 1fr}.g-3{grid-template-columns:repeat(3,1fr)}.g-11{grid-template-columns:1fr 1fr}}
     .card{background:#fff;border:1px solid var(--cb-line-200);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);min-width:0}
     .block>.card+.card,.block>.card+.grid{margin-top:16px}
+    #ga4-body>.card+.card,#ga4-body>.card+.grid{margin-top:16px}
     .card header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap}
     .card header p{margin:2px 0 0;font-size:13px;color:var(--cb-ink-500)}
     .chart{position:relative;height:260px}
@@ -196,7 +197,7 @@
       </div>
       <div class="wrap">
         <nav class="secnav" aria-label="Seções do painel">
-          <a href="#visao">Visão geral</a><a href="#contatos">Contatos</a><a href="#calculadora">Calculadora</a><a href="#google-ads">Google Ads</a><a href="#campanhas">Campanhas</a><a href="#leitura">Leitura</a><a href="#faq">FAQ</a><a href="#jornadas">Jornadas</a><a href="#quando">Quando</a><a href="#onde">Onde</a><a href="#cliques">Cliques</a><a href="#publico">Público</a><a href="#aovivo">Ao vivo</a>
+          <a href="#visao">Visão geral</a><a href="#contatos">Contatos</a><a href="#calculadora">Calculadora</a><a href="#google-ads">Google Ads</a><a href="#ga4">GA4</a><a href="#campanhas">Campanhas</a><a href="#leitura">Leitura</a><a href="#faq">FAQ</a><a href="#jornadas">Jornadas</a><a href="#quando">Quando</a><a href="#onde">Onde</a><a href="#cliques">Cliques</a><a href="#publico">Público</a><a href="#aovivo">Ao vivo</a>
         </nav>
       </div>
     </div>
@@ -272,6 +273,12 @@
         <h2>Google Ads</h2>
         <p class="lead" id="ads-lead">Investimento e resultados das campanhas de anúncios</p>
         <div id="ads-body"><div class="card"><div class="empty">Carregando…</div></div></div>
+      </section>
+
+      <section class="block" id="ga4">
+        <h2>Google Analytics (GA4)</h2>
+        <p class="lead" id="ga4-lead">Sessões, eventos-chave e origens medidos pelo GA4</p>
+        <div id="ga4-body"><div class="card"><div class="empty">Carregando…</div></div></div>
       </section>
 
       <section class="block" id="campanhas">

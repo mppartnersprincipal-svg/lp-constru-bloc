@@ -20,6 +20,7 @@ campanhas lidos da API oficial, só leitura).
 | Login | `api/login.js` + `api/_lib/auth.js` | Senha única (`DASHBOARD_PASSWORD`) → token HMAC de 30 dias (`DASHBOARD_SECRET`). |
 | Consulta | `api/dashboard.js` + `api/_lib/report.js` | KPIs com comparação de período, série diária, origens, página de entrada, dispositivos, WhatsApp e ligação por `cta_location` + pivô por canal, funil de leitura por página, FAQ, calculadora, campanhas UTM, jornadas, heatmap 7×24, geografia, cliques, consentimento, novo × recorrente, feed ao vivo. |
 | Google Ads | `api/google-ads.js` + `api/_lib/google-ads.js` | Consulta separada: se o Ads demorar ou falhar, o resto do painel não espera nem zera. |
+| GA4 | `api/ga4.js` + `api/_lib/ga4.js` | GA4 Data API (só leitura, conta de serviço). Também em consulta separada. |
 | UI | `site/dashboard/index.html` + `app.js` | Chart.js via CDN, filtros na URL, identidade do `Design System Construbloc/`. `noindex` + `robots.txt`. |
 
 ### Filtros
@@ -68,6 +69,32 @@ conter dados da conta).
 - "Campanhas no site" usa o coletor próprio (gclid/UTM) e pode divergir do Ads por atribuição, consentimento e processamento.
 - Se a conta conectada for a MCC (e não a anunciante), a seção avisa e não mostra métricas.
 
+## GA4
+
+Mostra o que o GA4 mediu (via GTM) no mesmo período do painel: sessões, usuários, novos
+usuários, taxa de engajamento, duração média, eventos-chave e eventos-chave por sessão (com
+comparação ao período anterior), gráfico diário, contagem dos eventos do site
+(`whatsapp_click`, `phone_click`, `cta_click`, `calculator_use`, `faq_open`), canais e
+páginas de entrada (top 10). Uma única chamada `batchRunReports` (5 relatórios). **Só leitura.**
+
+### Configurar a conexão
+
+1. No Google Cloud (mesmo projeto do OAuth do Ads serve), ative a **Google Analytics Data API**.
+2. Crie uma **conta de serviço** (IAM → Contas de serviço) e gere uma **chave JSON**.
+3. No GA4: Administrador → Gerenciamento de acesso à propriedade → adicione o e-mail da conta de serviço (`...@...iam.gserviceaccount.com`) como **Leitor**.
+4. Pegue o **ID da propriedade** (Administrador → Detalhes da propriedade; número, não o `G-0J96MVPZ7W`).
+5. Cadastre `GA4_PROPERTY_ID` e `GA4_SERVICE_ACCOUNT_JSON` (o conteúdo inteiro do arquivo JSON) na Vercel e faça **Redeploy**.
+
+Sem as variáveis, a seção mostra **"Conexão com o GA4 pendente"**. Erros aparecem com
+mensagem segura (sem repassar a resposta do Google) e não afetam as outras seções.
+
+### Como interpretar
+
+- Datas inclusivas, aplicadas no fuso da propriedade (exibido na seção). Filtros de origem e página não se aplicam.
+- **Eventos-chave** = métrica `keyEvents` (eventos marcados como evento-chave no GA4; ver pendência no `README`). Contagens de evento não são sessões únicas.
+- Se o GA4 aplicar limite de privacidade (`subjectToThresholding`), a seção avisa que alguns números podem estar abaixo do real.
+- O GA4 diverge do coletor próprio por consentimento, bloqueadores, modelagem e processamento (até 48 h).
+
 ## Variáveis de ambiente (Vercel → Settings → Environment Variables)
 
 Nenhuma chave vai no código nem no front. Nunca use prefixo público.
@@ -84,6 +111,8 @@ Nenhuma chave vai no código nem no front. Nunca use prefixo público.
 | `GOOGLE_ADS_CLIENT_ID` / `GOOGLE_ADS_CLIENT_SECRET` | cliente OAuth do Google Cloud |
 | `GOOGLE_ADS_REFRESH_TOKEN` | refresh token gerado com esse cliente |
 | `GOOGLE_ADS_API_VERSION` | opcional; padrão `v25`. Atualizar conforme o [calendário de versões](https://developers.google.com/google-ads/api/docs/sunset-dates) |
+| `GA4_PROPERTY_ID` | ID numérico da propriedade GA4 (não o `G-`) |
+| `GA4_SERVICE_ACCOUNT_JSON` | conteúdo do JSON da chave da conta de serviço (Leitor na propriedade) (**secreto**) |
 
 Sem as duas do Supabase, a coleta descarta em silêncio (a LP nunca quebra por causa de
 analytics). Sem senha/segredo, o login responde 503.
@@ -93,7 +122,7 @@ analytics). Sem senha/segredo, o login responde 503.
 ```
 cp .env.example .env.local   # e preencha
 npm run dev                  # http://localhost:4173 (site + /api + /dashboard)
-npm test                     # classify, validação do collect, agregações e Google Ads (respostas simuladas)
+npm test                     # classify, validação do collect, agregações, Google Ads e GA4 (respostas simuladas)
 ```
 
 ## Deploy

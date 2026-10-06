@@ -16,7 +16,7 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 - Confirmar no GA4: `whatsapp_click` e `phone_click` como evento-chave + dimensões personalizadas (ver README).
 - Testar tags no GTM Preview no site publicado.
-- Dashboard: rodar a migration `0001_construbloc_analytics.sql`, cadastrar variáveis na Vercel (Supabase, senha, Google Ads) e conferir no primeiro deploy que `api/` vira Functions com `outputDirectory: site`.
+- Dashboard: rodar a migration `0001_construbloc_analytics.sql`, cadastrar variáveis na Vercel (Supabase, senha, Google Ads, GA4: conta de serviço como Leitor + ID numérico da propriedade) e conferir no primeiro deploy que `api/` vira Functions com `outputDirectory: site`.
 - Banner de cookies + Política de Privacidade (LGPD).
 
 ## Histórico
@@ -40,3 +40,6 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 ### 2026-10-05
 - feat: dashboard first-party em /dashboard (coletor `site/js/tracker.js`, `api/`, migration, Google Ads só leitura, testes; ver `DASHBOARD.md`). Coletor espelha o dataLayer sem alterar GTM.
+
+### 2026-10-06
+- feat: seção GA4 no /dashboard via Data API, só leitura com conta de serviço (`api/ga4.js`, `api/_lib/ga4.js`, testes) — mostra o que o GA4 mediu ao lado do coletor próprio, sem mudar o GTM.

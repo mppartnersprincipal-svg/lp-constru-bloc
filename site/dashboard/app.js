@@ -1,4 +1,4 @@
-/* Dashboard first-party da LP Construbloc. Consome /api/dashboard, /api/google-ads e /api/login.
+/* Dashboard first-party da LP Construbloc. Consome /api/dashboard, /api/google-ads, /api/ga4 e /api/login.
  * Filtros ficam na URL (?periodo, de, ate, origem, pagina, jornadas). Tudo que vem da API passa por esc(). */
 (function () {
   'use strict';
@@ -10,6 +10,8 @@
   var TYPE = { fina: 'fina', media: 'média', grossa: 'grossa', zero: '0', um: '1' };
   var USAGE = { concreto: 'Concreto', camada: 'Camada de brita' };
   var SECTION = { flutuante: 'Botão flutuante', 'barra-mobile': 'Barra mobile', topbar: 'Barra do topo', header: 'Header', footer: 'Rodapé', topo: 'Hero' };
+  var GA4_CH = { 'Paid Search': 'Pesquisa paga', 'Organic Search': 'Pesquisa orgânica', Direct: 'Direto', Referral: 'Indicação', 'Organic Social': 'Social orgânico', 'Paid Social': 'Social pago', 'Cross-network': 'Várias redes', Display: 'Display', 'Paid Other': 'Outros pagos', 'Organic Maps': 'Maps', Unassigned: 'Não atribuído' };
+  var GA4_EV = { whatsapp_click: 'Cliques WhatsApp', phone_click: 'Cliques em ligar', cta_click: 'Outros CTAs', calculator_use: 'Usos da calculadora', faq_open: 'FAQs abertas' };
   var ADS_STATUS = { ENABLED: ['Ativa', 'on'], PAUSED: ['Pausada', 'off'], REMOVED: ['Removida', 'rm'] };
   var COLORS = ['#002080', '#E0B000', '#1B3A9E', '#5B6275', '#F0D830', '#A2A8B8', '#000838', '#C99E00', '#DCE0EA'];
   var charts = {};
@@ -93,6 +95,10 @@
     api('/api/google-ads', new URLSearchParams({ de: state.de, ate: state.ate }).toString())
       .then(function (a) { if (seq === loadSeq) googleAds(a); })
       .catch(function (e) { if (e.message !== '401' && seq === loadSeq) googleAds({ status: 'error', message: 'A consulta ao Google Ads não foi concluída. Tente atualizar o painel em alguns minutos.' }); });
+    $('#ga4-body').innerHTML = '<div class="card"><div class="empty">Consultando o GA4…</div></div>';
+    api('/api/ga4', new URLSearchParams({ de: state.de, ate: state.ate }).toString())
+      .then(function (g) { if (seq === loadSeq) ga4(g); })
+      .catch(function (e) { if (e.message !== '401' && seq === loadSeq) ga4({ status: 'error', message: 'A consulta ao GA4 não foi concluída. Tente atualizar o painel em alguns minutos.' }); });
   }
 
   // ---------- Render ----------
@@ -241,6 +247,45 @@
       }).join('') + '</tbody></table></div>';
     el.innerHTML = cards + '<div class="card"><header><div><h3>Resultados por campanha</h3><p>Inclui campanhas pausadas ou removidas com resultados no período</p></div></header>' + table +
       '<p class="note">O período selecionado vale para os anúncios; os filtros de origem e de página valem só para as visitas do site. As conversões seguem a atribuição do Google Ads, podem ser fracionárias e ser atualizadas depois. Não são o mesmo número que os cliques no WhatsApp medidos pelo site. "—" indica uma taxa que não pode ser calculada no período.</p></div>';
+  }
+
+  // ---------- GA4 (Data API, só leitura) ----------
+  function ga4(g) {
+    var el = $('#ga4-body');
+    if (charts['c-ga4-daily']) { charts['c-ga4-daily'].destroy(); delete charts['c-ga4-daily']; }
+    if (!g || g.status !== 'ready') {
+      var pend = g && g.status === 'not_configured';
+      $('#ga4-lead').textContent = 'Sessões, eventos-chave e origens medidos pelo GA4';
+      el.innerHTML = '<div class="state' + (pend ? '' : ' err') + '"><b>' + (pend ? 'Conexão com o GA4 pendente' : 'Não foi possível carregar o GA4') + '</b>' + esc(g && g.message) + '</div>';
+      return;
+    }
+    var t = g.totals, pv = g.previous;
+    var pct = function (v) { return v == null ? '—' : dec(v * 100, 1) + '%'; };
+    var pp = function (a, b) { return a == null || b == null ? null : (a - b) * 100; };
+    $('#ga4-lead').textContent = 'Propriedade ' + g.propertyId + ' · ' + brDate(g.from) + ' a ' + brDate(g.to) + (g.timeZone ? ' · fuso da propriedade: ' + g.timeZone : '');
+    var cards = '<div class="kpis">' + [
+      kpi('Sessões', t.sessions, pv.sessions), kpi('Usuários', t.users, pv.users), kpi('Novos usuários', t.newUsers, pv.newUsers),
+      kpi('Taxa de engajamento', pct(t.engagementRate), null, pp(t.engagementRate, pv.engagementRate), 'pp', null, 'Sessões engajadas ÷ sessões'),
+      kpi('Duração média', Math.round(t.averageSessionDuration) + ' s', null, pctDelta(t.averageSessionDuration, pv.averageSessionDuration)),
+      kpi('Eventos-chave', dec(t.keyEvents), null, pctDelta(t.keyEvents, pv.keyEvents), null, 'gold', 'Marcados como evento-chave no GA4'),
+      kpi('Eventos-chave / sessão', pct(t.keyEventRate), null, pp(t.keyEventRate, pv.keyEventRate), 'pp', 'gold'),
+    ].join('') + '</div>';
+    var events = '<div class="kpis">' + g.events.map(function (e) { return kpi(GA4_EV[e.name] || e.name, e.count, e.previous, null, null, null, e.name); }).join('') + '</div>';
+    var table = function (rows, head, label) {
+      if (!rows.length) return '<div class="empty">Sem dados no período</div>';
+      return '<div class="tbl-wrap"><table><thead><tr><th>' + head + '</th><th class="n">Sessões</th><th class="n">Usuários</th><th class="n">Eventos-chave</th></tr></thead><tbody>' +
+        rows.map(function (r) { return '<tr><td>' + esc(label(r.key)) + '</td><td class="n">' + fmt(r.sessions) + '</td><td class="n">' + fmt(r.users) + '</td><td class="n">' + dec(r.keyEvents) + '</td></tr>'; }).join('') + '</tbody></table></div>';
+    };
+    el.innerHTML = cards +
+      '<div class="card"><header><div><h3>Sessões e eventos-chave por dia</h3><p>Segundo o GA4</p></div></header><div class="chart"><canvas id="c-ga4-daily" role="img" aria-label="Sessões e eventos-chave por dia no GA4"></canvas></div></div>' +
+      '<div class="card"><header><div><h3>Eventos do site no GA4</h3><p>Contagem de eventos enviados pelo GTM (o mesmo clique pode contar mais de uma vez por sessão)</p></div></header>' + events + '</div>' +
+      '<div class="grid g-11"><div class="card"><header><div><h3>Canais</h3><p>Agrupamento padrão de canais do GA4</p></div></header>' + table(g.channels, 'Canal', function (k) { return GA4_CH[k] || k; }) + '</div>' +
+      '<div class="card"><header><div><h3>Páginas de entrada</h3><p>Primeira página da sessão</p></div></header>' + table(g.landingPages, 'Página', function (k) { return k; }) + '</div></div>' +
+      '<p class="note">O período selecionado vale para o GA4; os filtros de origem e de página valem só para as visitas do site. O GA4 depende de consentimento e bloqueadores, aplica modelagem e pode levar até 48 h para fechar os números, por isso diverge do coletor próprio.' + (g.thresholded ? ' <b>Alguns números foram ocultados pelo GA4 (limite de privacidade) e podem estar abaixo do real.</b>' : '') + '</p>';
+    chart('c-ga4-daily', { type: 'bar', data: { labels: g.daily.map(function (x) { return brDate(x.date, true); }), datasets: [
+      { type: 'line', label: 'Eventos-chave', data: g.daily.map(function (x) { return x.keyEvents; }), borderColor: '#E0B000', backgroundColor: '#E0B000', tension: .35, pointRadius: 2, yAxisID: 'y1' },
+      { label: 'Sessões', data: g.daily.map(function (x) { return x.sessions; }), backgroundColor: 'rgba(0,32,128,.85)', borderRadius: 3 },
+    ] }, options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, y1: { position: 'right', beginAtZero: true, grid: { drawOnChartArea: false }, ticks: { precision: 0 } } }, plugins: { legend: { position: 'bottom' } } } });
   }
 
   function campaigns(rows) {

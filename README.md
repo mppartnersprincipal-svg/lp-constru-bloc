@@ -53,7 +53,7 @@ Conteúdo: tag do Google (GA4), uma tag de evento GA4 para cada evento acima, **
 
 ## Dashboard first-party (/dashboard)
 
-Painel próprio de comportamento dos visitantes, com login por senha, no mesmo modelo da LP Gaspar Lopes. O coletor `site/js/tracker.js` roda em paralelo ao GTM (anônimo, sem cookies) e grava no Supabase via `api/` (Vercel Functions). Inclui calculadora (quem calcula volume de caminhão), WhatsApp e ligação por `cta_location` e a seção Google Ads (só leitura). Arquitetura, variáveis de ambiente, LGPD e Google Ads: **`DASHBOARD.md`**. Local: `npm run dev` e `npm test`.
+Painel próprio de comportamento dos visitantes, com login por senha, no mesmo modelo da LP Gaspar Lopes. O coletor `site/js/tracker.js` roda em paralelo ao GTM (anônimo, sem cookies) e grava no Supabase via `api/` (Vercel Functions). Inclui calculadora (quem calcula volume de caminhão), WhatsApp e ligação por `cta_location` e as seções Google Ads e GA4 (só leitura, via API). Arquitetura, variáveis de ambiente, LGPD, Google Ads e GA4: **`DASHBOARD.md`**. Local: `npm run dev` e `npm test`.
 
 ## Deploy (Vercel)
 
