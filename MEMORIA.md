@@ -45,3 +45,6 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - feat: seção GA4 no /dashboard via Data API, só leitura com conta de serviço (`api/ga4.js`, `api/_lib/ga4.js`, testes) — mostra o que o GA4 mediu ao lado do coletor próprio, sem mudar o GTM.
 - chore: migration `0001_construbloc_analytics.sql` aplicada no Supabase (khipnjfbxjgvmjvyxero) — painel vazio porque as tabelas não existiam e a Vercel está sem as variáveis do Supabase (coletor descarta em silêncio).
 - chore: variáveis da Vercel completas (Supabase, senha, Google Ads, GA4); as 3 fontes do /dashboard conferidas em produção.
+
+### 2026-10-07
+- chore: Search Console verificado (propriedade de domínio construbloc.site via TXT), sitemap enviado e indexação pedida para /, /areia e /brita.
