@@ -8,16 +8,16 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - Tracking só via GTM `GTM-WXVXVZSF` (GA4 `G-0J96MVPZ7W`, Ads `AW-11368504142`). Conversões Ads vêm das tags GTM, não importar eventos-chave do GA4.
 - Foco em ensacados 20 kg (areia R$ 10, brita R$ 10, desde 12/10/2026). Granel/m³ removido do posicionamento (margem melhor no ensacado).
 - Calculadora: areia 70 sacos/m³, brita 75 sacos/m³.
+- Cookies: Google mede até a pessoa clicar "Só o essencial"; remarketing só com "Aceitar" (decisão do Pedro, para não derrubar conversões do Ads). Coletor mede 100%.
 - WhatsApp (62) 3579-1166; ligação (62) 3091-1091.
 - Fotos de produto: Wikimedia Commons (domínio público/CC0), formato 16:7, WebP 640/960.
-- Dashboard /dashboard: tabelas `construbloc_*` no Supabase compartilhado (Sólida/Gaspar), sem banner de cookies (regra da Gaspar para "não respondeu"). Volume de caminhão = 3 m³ ou mais (`TRUCK_M3`). Filtro de página = página de entrada. GA4 via conta de serviço da agência `dashboard-ga4@mp-dashboard-501816` (Leitor; propriedade 556611801). UTMs do Ads no sufixo do URL final de cada grupo.
+- Dashboard /dashboard: tabelas `construbloc_*` no Supabase compartilhado (Sólida/Gaspar). Volume de caminhão = 3 m³ ou mais (`TRUCK_M3`). Filtro de página = página de entrada. GA4 via conta de serviço da agência `dashboard-ga4@mp-dashboard-501816` (Leitor; propriedade 556611801). UTMs do Ads no sufixo do URL final de cada grupo.
 
 ## Pendências
 
 - Confirmar no GA4: `whatsapp_click` e `phone_click` como evento-chave + dimensões personalizadas (ver README).
 - Testar tags no GTM Preview no site publicado.
 - Dashboard: confirmar que os próximos cliques do Ads chegam com UTM (sufixo por grupo: areia-brita-goiania/areia|brita, material-construcao-perto-de-mim/material-construcao).
-- Banner de cookies + Política de Privacidade (LGPD).
 
 ## Histórico
 
@@ -51,3 +51,4 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 ### 2026-10-12
 - fix: reajuste dos ensacados pedido pelo cliente, areia R$ 8 → R$ 10 e brita R$ 9 → R$ 10 (areia.html, brita.html, llms.txt, sitemap, Areias e Britas.txt).
+- feat: aviso de cookies com Consent Mode v2 + /politica-de-privacidade (`js/consent.js`, head das 3 páginas, tracker, migration 0002 aplicada) — escolha vai ao dashboard; "Só o essencial" apaga id de visitante.

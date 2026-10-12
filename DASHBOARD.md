@@ -139,8 +139,10 @@ npm test                     # classify, validação do collect, agregações, G
 ## LGPD
 
 - Coleta anônima e agregada: sem IP, sem cookies, sem dados pessoais.
-- A LP ainda não tem banner de cookies, então todo visitante aparece como "não respondeu" e recebe o id de visitante (mesma regra da Gaspar para quem não respondeu). Se um banner entrar, basta gravar `localStorage['cb-consent'] = 'accepted' | 'essential'`: "Só o essencial" apaga e omite o id persistente.
-- Base: legítimo interesse para medição anônima. Recomenda-se publicar uma Política de Privacidade/Cookies simples (pendência).
+- Aviso de cookies desde 12/10/2026 (`site/js/consent.js`, nas 3 páginas e na `/politica-de-privacidade`). A escolha fica em `localStorage['cb-consent'] = 'accepted' | 'essential'`, vai ao dataLayer e ao coletor como `cookie_consent {consent_choice}` e atualiza a sessão já no lote seguinte. O gráfico "Consentimento" mostra Aceitou / Só o essencial / Não respondeu.
+- O coletor mede 100% das visitas nos três casos. "Só o essencial" apaga o id de visitante no navegador e no banco (migration `0002_consent_clears_visitor.sql`), então essa pessoa sempre conta como visitante novo.
+- Google (Consent Mode v2, padrão no `<head>` antes do GTM): sem resposta, GA4 e conversões do Ads medem e `ad_personalization` fica negado; "Aceitar" libera remarketing; "Só o essencial" nega tudo (Google sem cookies, `url_passthrough` ligado). Decisão do Pedro: medir até recusar, para não derrubar as conversões do Ads.
+- Bases legais na política: legítimo interesse para a medição (com oposição pelo "Só o essencial") e consentimento para anúncios personalizados.
 
 ## Mudar para um projeto Supabase próprio
 

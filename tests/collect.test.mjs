@@ -68,6 +68,12 @@ test('consent only accepts known values', () => {
   assert.equal(buildBatch({ s: { id: ID, consent: 'hack' }, e: [] }).session.consent, null);
 });
 
+test('accepts the cookie_consent event from the consent banner', () => {
+  const b = buildBatch({ s: { id: ID, consent: 'accepted' }, e: [{ n: 'cookie_consent', t: 0, p: { consent_choice: 'accepted' } }] });
+  assert.equal(b.session.consent, 'accepted');
+  assert.deepEqual(b.rows.map((r) => [r.name, r.props.consent_choice]), [['cookie_consent', 'accepted']]);
+});
+
 test('sanitize keeps fractional volume_m3 (2 decimals) and calculator fields', () => {
   assert.deepEqual(sanitize({ product: 'brita', product_type: 'um', usage: 'concreto', volume_m3: 0.4567 }),
     { product: 'brita', product_type: 'um', usage: 'concreto', volume_m3: 0.46 });

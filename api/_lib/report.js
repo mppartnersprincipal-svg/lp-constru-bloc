@@ -199,6 +199,7 @@ export function trail(evs) {
     else if (e.name === 'phone_click') steps.push({ t: e.ts, kind: 'wa', text: `Ligação (${p.cta_location || ''})` });
     else if (e.name === 'cta_click') steps.push({ t: e.ts, kind: 'action', text: `Link: ${p.cta_location || ''}` });
     else if (e.name === 'calculator_use') steps.push({ t: e.ts, kind: 'calc', text: `Calculou ${p.product} ${p.product_type || ''}${p.usage ? ' / ' + p.usage : ''}: ${String(p.volume_m3).replace('.', ',')} m³` });
+    else if (e.name === 'cookie_consent') steps.push({ t: e.ts, kind: 'action', text: `Cookies: ${p.consent_choice === 'accepted' ? 'aceitou' : 'só o essencial'}` });
     else if (e.name === 'faq_open') steps.push({ t: e.ts, kind: 'action', text: `FAQ: ${p.faq_question}` });
     else if (e.name === 'click' && p.text && !/wa\.me|tel:/.test(p.href || '')) steps.push({ t: e.ts, kind: 'click', text: `${p.text}${p.section ? ' · ' + p.section : ''}` });
     else if (e.name === 'page_leave') steps.push({ t: e.ts, kind: 'leave', text: `Saiu (${Math.round((p.duration_ms || 0) / 1000)} s, ${p.max_scroll_pct || 0}% da página)` });

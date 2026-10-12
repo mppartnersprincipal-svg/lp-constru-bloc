@@ -4,7 +4,7 @@ import { classifyChannel, parseUA } from './classify.js';
 
 export const EVENTS = new Set([
   'page_view', 'page_leave', 'click', 'section_view',
-  'whatsapp_click', 'phone_click', 'cta_click', 'calculator_use', 'faq_open',
+  'whatsapp_click', 'phone_click', 'cta_click', 'calculator_use', 'faq_open', 'cookie_consent',
 ]);
 export const PAGE_TYPES = new Set(['home', 'areia', 'brita']);
 export const MAX_EVENTS = 50;

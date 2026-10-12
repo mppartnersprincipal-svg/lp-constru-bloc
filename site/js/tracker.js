@@ -3,7 +3,7 @@
  * Mesmo modelo da LP Gaspar Lopes:
  * - Anônimo: sem IP, sem cookies; sessão em sessionStorage (renova após 30 min parado);
  *   id de visitante persistente (localStorage, 13 meses) SÓ se o visitante não
- *   escolheu "Só o essencial" (chave cb-consent; a LP ainda não tem banner).
+ *   escolheu "Só o essencial" (chave cb-consent, gravada pelo aviso em js/consent.js).
  * - Independente do GTM/GA4/Ads: não altera o contêiner nem o dataLayer.
  * - Não roda para bots (navigator.webdriver / UA) nem na página /dashboard.
  * - Fila com flush a cada 10 eventos / 5 s / aba oculta / pagehide (sendBeacon).
@@ -13,6 +13,7 @@
  * section_view {section} (1x por seção por página, só para o coletor).
  * Os eventos do dataLayer (whatsapp_click, phone_click, cta_click, calculator_use,
  * faq_open) chegam por window.cbCollect(name, props), chamado pelo track() da página.
+ * cookie_consent {consent_choice} vem do aviso de cookies e já atualiza a sessão.
  * ========================================================================== */
 (function () {
   'use strict';
@@ -40,7 +41,7 @@
   function set(kind, k, v) { var s = store(kind); try { if (s) s.setItem(k, v); } catch (e) {} }
   function del(kind, k) { var s = store(kind); try { if (s) s.removeItem(k); } catch (e) {} }
 
-  // ---- consentimento (decisão do banner, quando existir) ----
+  // ---- consentimento (decisão do aviso de cookies, js/consent.js) ----
   function consent() { return get('local', CONSENT_KEY); }
 
   // ---- tipo de página (a página faz dataLayer.push({ page_type }) antes do GTM) ----
@@ -123,8 +124,17 @@
     if (name === 'phone_click') session.phone_clicks = (session.phone_clicks || 0) + 1;
     if (queue.length >= FLUSH_AT) send(false); else schedule();
   }
+  // Escolha feita durante a visita: vale já no próximo lote. "Só o essencial" apaga o id de visitante.
+  function applyConsent(choice) {
+    session.consent = choice;
+    if (choice === 'essential') { del('local', VISITOR_KEY); VID = null; session.visitor_id = null; }
+  }
   // Espelho dos eventos do dataLayer (chamado pelo track() de cada página)
-  window.cbCollect = function (name, props) { if (name && name !== 'page_view') track(name, props); };
+  window.cbCollect = function (name, props) {
+    if (!name || name === 'page_view') return;
+    if (name === 'cookie_consent' && props) applyConsent(props.consent_choice);
+    track(name, props);
+  };
 
   // ---- page_view ----
   track('page_view', { sw: innerWidth, sh: innerHeight, ref_host: refHost || null });
@@ -187,6 +197,7 @@
     try { var u = new URL(href, location.href); return u.host === location.host ? (u.pathname + u.hash) : u.hostname; } catch (e) { return href.slice(0, 80); }
   }
   function sectionOf(el) {
+    if (el.closest('.cb-consent')) return 'aviso-cookies';
     if (el.closest('.fabs')) return 'flutuante';
     if (el.closest('.mbar')) return 'barra-mobile';
     if (el.closest('.topbar')) return 'topbar';

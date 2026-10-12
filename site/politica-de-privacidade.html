@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidade | Construbloc</title>
+<meta name="description" content="Como a Construbloc mede as visitas deste site, quais cookies usa, com quem compartilha dados e como exercer os seus direitos pela LGPD.">
+<link rel="canonical" href="https://www.construbloc.site/politica-de-privacidade">
+<meta name="theme-color" content="#002080">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<!-- Página sem GTM e sem coletor: não entra nas métricas do /dashboard. Carrega só o aviso de cookies
+     (/js/consent.js), usado também pelo botão "Rever minha escolha de cookies". -->
+<style>
+@font-face{font-family:"Russo One";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/russo-one-400.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/barlow-400.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/barlow-600.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/barlow-700.woff2) format("woff2")}
+:root{
+  --cb-blue-900:#000838;--cb-blue-700:#001060;--cb-blue-600:#002080;--cb-blue-100:#E4E8F5;--cb-blue-50:#F1F3FA;
+  --cb-gold-500:#E0B000;--cb-gold-400:#F0D830;
+  --cb-ink-900:#0E1220;--cb-ink-700:#2A3042;--cb-ink-500:#5B6275;--cb-line-200:#DCE0EA;--cb-surface-100:#F3F4F8;
+  --font-display:"Russo One","Arial Black",Impact,sans-serif;
+  --font-body:"Barlow","Helvetica Neue",Arial,sans-serif;
+  --radius-md:6px;--radius-lg:10px;--dur-base:200ms;--ease-out:cubic-bezier(.2,.7,.2,1);
+  --gradient-gold:linear-gradient(90deg,#F8F050 0%,#E0B000 100%);
+  --gutter:16px;
+}
+@media (min-width:768px){:root{--gutter:24px}}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--cb-ink-700);font:400 16px/1.65 var(--font-body)}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--cb-blue-600);font-weight:600;text-underline-offset:2px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--cb-gold-500);outline-offset:2px}
+.wrap{max-width:820px;margin:0 auto;padding:0 var(--gutter)}
+.top{position:relative;border-bottom:1px solid var(--cb-line-200)}
+.top::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:var(--gradient-gold)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:76px;padding-top:6px}
+.top img{height:44px;width:auto}
+.top .back{font-size:15px;white-space:nowrap}
+main{padding:40px 0 56px}
+h1{font:400 clamp(1.75rem,1.3rem + 2vw,2.5rem)/1.15 var(--font-display);color:var(--cb-blue-600);margin:0 0 8px}
+.meta{color:var(--cb-ink-500);font-size:14px;margin:0 0 28px}
+.lead{font-size:18px;color:var(--cb-ink-900);margin:0 0 8px}
+h2{font:700 22px/1.25 var(--font-body);color:var(--cb-blue-900);margin:40px 0 12px;padding-top:16px;border-top:1px solid var(--cb-line-200)}
+h3{font:700 17px/1.3 var(--font-body);color:var(--cb-ink-900);margin:24px 0 8px}
+p,ul{margin:0 0 14px}
+ul{padding-left:22px}
+li{margin-bottom:6px}
+.box{background:var(--cb-blue-50);border-left:4px solid var(--cb-gold-500);border-radius:var(--radius-md);padding:16px 18px;margin:20px 0}
+.box p:last-child{margin-bottom:0}
+.table{overflow-x:auto;margin:0 0 16px;border:1px solid var(--cb-line-200);border-radius:var(--radius-md)}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--cb-line-200)}
+th{background:var(--cb-surface-100);color:var(--cb-ink-900);font-weight:700}
+tr:last-child td{border-bottom:0}
+code{font:600 14px/1 ui-monospace,Consolas,monospace;background:var(--cb-surface-100);padding:2px 6px;border-radius:4px;color:var(--cb-ink-900)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border:2px solid var(--cb-blue-600);border-radius:999px;background:#fff;color:var(--cb-blue-600);font:700 14px/1 var(--font-body);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:background var(--dur-base) var(--ease-out)}
+.btn:hover{background:var(--cb-blue-50)}
+.btn:disabled{opacity:.6;cursor:default}
+.ok{color:#18753C;font-weight:600;margin-top:10px}
+footer{background:var(--cb-blue-900);color:rgba(255,255,255,.7);font-size:13px;line-height:1.6;padding:24px 0 calc(24px + env(safe-area-inset-bottom))}
+footer a{color:var(--cb-gold-400)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a href="/" aria-label="Construbloc, voltar para a página inicial"><img src="/assets/img/logo-color.webp" width="280" height="141" alt="Construbloc"></a>
+    <a class="back" href="/">Voltar ao site</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <h1>Política de Privacidade</h1>
+    <p class="meta">Vigente desde <time datetime="2026-10-12">12/10/2026</time></p>
+
+    <p class="lead">Esta página explica, em linguagem simples, o que o site da Construbloc registra quando você o visita, por que registra e como você pode mudar a sua escolha.</p>
+
+    <div class="box">
+      <p><strong>Resumo:</strong> não pedimos nome, CPF, e-mail nem telefone neste site. Medimos as visitas de forma anônima e usamos ferramentas do Google para saber se os nossos anúncios funcionam. Anúncios personalizados só depois que você clica em <strong>Aceitar</strong>. Se preferir, escolha <strong>Só o essencial</strong> no aviso de cookies.</p>
+    </div>
+
+    <h2>1. Quem é responsável pelos dados</h2>
+    <p><strong>CONSTRUBLOC COMÉRCIO DE MATERIAIS PARA CONSTRUÇÃO LTDA</strong>, CNPJ 15.453.276/0001-00, Av. Madrid, 420, Qd. 180, Lt. 05, Vila Boa, Goiânia, GO, CEP 74330-550. Contato para assuntos de privacidade: WhatsApp <a href="https://wa.me/556235791166" target="_blank" rel="noopener">(62) 3579-1166</a>.</p>
+
+    <h2>2. O que coletamos</h2>
+    <h3>2.1. Medição própria e anônima</h3>
+    <p>Quando a página abre, o nosso próprio sistema de medição registra a visita sem identificar quem você é e sem usar cookies. São registrados:</p>
+    <ul>
+      <li>página aberta, horário da visita e tempo de leitura;</li>
+      <li>até onde a página foi rolada e quais seções apareceram na tela;</li>
+      <li>cliques em botões e links, inclusive WhatsApp e ligação, perguntas frequentes abertas e uso da calculadora de sacos;</li>
+      <li>tipo de aparelho, navegador e sistema operacional, informados pelo próprio navegador;</li>
+      <li>cidade, estado e país aproximados, informados pelo servidor que hospeda o site;</li>
+      <li>de onde você chegou (busca, rede social, link direto ou anúncio), incluindo os parâmetros de campanha do endereço;</li>
+      <li>a sua resposta ao aviso de cookies.</li>
+    </ul>
+
+    <h3>2.2. Ferramentas do Google</h3>
+    <p>Usamos o Google Tag Manager para carregar o Google Analytics e o Google Ads, que medem as visitas e os contatos gerados pelos nossos anúncios. Essas ferramentas usam cookies próprios do Google para essa medição.</p>
+    <ul>
+      <li><strong>Sem resposta ao aviso:</strong> a medição do Google funciona, mas os anúncios personalizados (remarketing) ficam desligados.</li>
+      <li><strong>Aceitar:</strong> a medição continua e o Google pode usar a visita para mostrar anúncios da Construbloc em outros sites.</li>
+      <li><strong>Só o essencial:</strong> o Google passa a operar em modo restrito, sem gravar cookies e sem montar perfil de publicidade.</li>
+    </ul>
+
+    <h3>2.3. WhatsApp e ligações</h3>
+    <p>Os botões do site abrem uma conversa no WhatsApp ou uma ligação. Registramos apenas o clique, nunca o conteúdo da conversa. As informações que você enviar no WhatsApp, como a lista de materiais e o endereço de entrega, são usadas só para fazer o orçamento e a entrega.</p>
+
+    <h2>3. O que não coletamos</h2>
+    <ul>
+      <li>Não guardamos o seu endereço de IP na medição própria.</li>
+      <li>Não há formulário neste site: não coletamos nome, CPF, e-mail, telefone ou endereço por aqui.</li>
+      <li>Não tratamos dados sensíveis, como saúde, religião, opinião política ou biometria.</li>
+      <li>Não vendemos, alugamos nem cedemos dados.</li>
+      <li>Não tomamos decisões automatizadas que afetem você.</li>
+    </ul>
+
+    <h2>4. Por que podemos tratar esses dados</h2>
+    <div class="table">
+      <table>
+        <thead><tr><th>Tratamento</th><th>Base legal (LGPD, art. 7º)</th></tr></thead>
+        <tbody>
+          <tr><td>Medição própria e anônima das visitas</td><td>Legítimo interesse, com dados anônimos</td></tr>
+          <tr><td>Medição do Google Analytics e das conversões do Google Ads</td><td>Legítimo interesse, com direito de oposição pelo botão "Só o essencial"</td></tr>
+          <tr><td>Anúncios personalizados (remarketing)</td><td>Consentimento, dado no botão "Aceitar" e revogável a qualquer momento</td></tr>
+          <tr><td>Atendimento que você inicia no WhatsApp ou por telefone</td><td>Procedimentos preliminares a um contrato, a seu pedido</td></tr>
+          <tr><td>Registros técnicos de funcionamento e segurança do site</td><td>Cumprimento de obrigação legal e legítimo interesse</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="cookies">5. Cookies e armazenamento no navegador</h2>
+    <p>O nosso site guarda estes itens no armazenamento local do seu navegador. Eles não rastreiam você em outros sites:</p>
+    <div class="table">
+      <table>
+        <thead><tr><th>Item</th><th>Para que serve</th><th>Validade</th></tr></thead>
+        <tbody>
+          <tr><td><code>cb-consent</code></td><td>Lembra a sua resposta ao aviso de cookies</td><td>Até você limpar os dados do site</td></tr>
+          <tr><td><code>cb-s</code></td><td>Número aleatório que agrupa os cliques de uma mesma visita</td><td>A visita atual (renova após 30 minutos parado)</td></tr>
+          <tr><td><code>cb-v</code></td><td>Número aleatório que indica se o visitante é novo ou recorrente, sem dizer quem é</td><td>13 meses</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Os cookies do Google (como <code>_ga</code> e <code>_gcl_au</code>) seguem a regra do item 2.2. Se você escolher <strong>Só o essencial</strong>, o item <code>cb-v</code> é apagado e o Google deixa de gravar cookies.</p>
+
+    <h3>Mudar de ideia</h3>
+    <p>Você pode rever a sua escolha quando quiser. O botão abaixo apaga a resposta guardada e o identificador de visitante deste navegador, e o aviso aparece de novo para você decidir.</p>
+    <button class="btn" type="button" id="reset-consent">Rever minha escolha de cookies</button>
+    <p class="ok" id="reset-msg" role="status" hidden>Pronto. Sua escolha foi apagada; responda ao aviso que apareceu na tela.</p>
+
+    <h2>6. Com quem compartilhamos</h2>
+    <ul>
+      <li><strong>Google</strong> (Tag Manager, Analytics e Ads), para medição e publicidade;</li>
+      <li><strong>Vercel</strong>, que hospeda o site;</li>
+      <li><strong>Supabase</strong>, banco de dados onde fica a medição anônima;</li>
+      <li><strong>WhatsApp</strong> (grupo Meta), quando você inicia uma conversa conosco;</li>
+      <li><strong>autoridades públicas</strong>, se houver ordem judicial ou obrigação legal.</li>
+    </ul>
+    <p>Essas empresas têm servidores fora do Brasil, o que caracteriza transferência internacional de dados, permitida pelo art. 33 da LGPD. Elas seguem as nossas instruções e as próprias políticas de privacidade.</p>
+
+    <h2>7. Por quanto tempo guardamos</h2>
+    <p>Os registros anônimos de navegação ficam guardados enquanto forem úteis para acompanhar o desempenho do site e das campanhas. O identificador de visitante expira sozinho em 13 meses. As conversas de WhatsApp ficam pelo tempo necessário ao atendimento e ao histórico do pedido.</p>
+
+    <h2>8. Seus direitos</h2>
+    <p>A LGPD garante a você, a qualquer momento e sem custo, o direito de:</p>
+    <ul>
+      <li>confirmar se tratamos dados seus e acessar esses dados;</li>
+      <li>corrigir dados incompletos, inexatos ou desatualizados;</li>
+      <li>pedir anonimização, bloqueio ou eliminação de dados desnecessários;</li>
+      <li>pedir a portabilidade dos dados;</li>
+      <li>saber com quem compartilhamos os seus dados;</li>
+      <li>revogar o consentimento e se opor a um tratamento, como descrito no item 5;</li>
+      <li>reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</li>
+    </ul>
+    <p>Para exercer qualquer um deles, fale com a gente pelo WhatsApp <a href="https://wa.me/556235791166" target="_blank" rel="noopener">(62) 3579-1166</a>. Como a medição do site é anônima, em alguns casos não conseguimos ligar um registro a você; se isso acontecer, explicamos o motivo.</p>
+
+    <h2>9. Segurança</h2>
+    <p>O site só funciona por conexão criptografada (HTTPS). O banco de dados da medição não fica aberto ao público: o navegador nunca o acessa diretamente, e o painel interno de resultados é protegido por senha. Se acontecer algum incidente com risco relevante, comunicaremos os afetados e a ANPD.</p>
+
+    <h2>10. Mudanças nesta política</h2>
+    <p>Se mudarmos a forma de tratar dados, atualizamos este texto e a data no topo da página. Vale sempre a versão publicada aqui.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    CONSTRUBLOC COMÉRCIO DE MATERIAIS PARA CONSTRUÇÃO LTDA · CNPJ 15.453.276/0001-00 · <a href="/">Voltar ao site</a>
+  </div>
+</footer>
+
+<script src="/js/consent.js" defer></script>
+<script>
+document.getElementById('reset-consent').addEventListener('click', function () {
+  if (window.cbConsent) window.cbConsent.reset();
+  else { try { localStorage.removeItem('cb-consent'); localStorage.removeItem('cb-v'); } catch (e) {} }
+  this.disabled = true;
+  document.getElementById('reset-msg').hidden = false;
+});
+</script>
+</body>
+</html>

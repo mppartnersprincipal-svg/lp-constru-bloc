@@ -1,7 +1,7 @@
 // Agregações do /dashboard (api/_lib/report.js): calculadora, funil e KPIs.
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { calculatorReport, funnels, kpis, TRUCK_M3 } from '../api/_lib/report.js';
+import { calculatorReport, funnels, kpis, trail, TRUCK_M3 } from '../api/_lib/report.js';
 
 const ev = (session_id, ts, name, props = {}, page_type = 'areia') => ({ session_id, ts, name, props, page_type });
 
@@ -59,4 +59,9 @@ test("click texts containing | keep text, section and page apart", async () => {
   const { clicks } = await import("../api/_lib/report.js");
   const [row] = clicks([{ session_id: "a", name: "click", page_type: "home", props: { text: "Areia | Brita", section: "header" } }]);
   assert.deepEqual(row, { text: "Areia | Brita", section: "header", page: "home", value: 1 });
+});
+
+test('trail shows the cookie choice in the visitor journey', () => {
+  const ev = (choice) => ({ ts: '2026-10-12T12:00:00Z', name: 'cookie_consent', page_type: 'home', props: { consent_choice: choice } });
+  assert.deepEqual(trail([ev('accepted'), ev('essential')]).map((s) => s.text), ['Cookies: aceitou', 'Cookies: só o essencial']);
 });

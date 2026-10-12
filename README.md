@@ -27,6 +27,8 @@ As 3 páginas carregam só o **Google Tag Manager** (`GTM-WXVXVZSF`) e enviam ev
 
 Cada página define `page_type` (`home`, `areia`, `brita`) antes do GTM carregar.
 
+**Consentimento (LGPD):** antes do GTM, cada página define o padrão do Google Consent Mode v2 a partir de `localStorage['cb-consent']`: sem resposta mede GA4/Ads com anúncios personalizados negados; `essential` nega tudo; `accepted` libera tudo. O aviso fica em `site/js/consent.js` (dispara `cookie_consent` com `consent_choice`) e a política em `site/politica-de-privacidade.html`. As tags do contêiner respeitam o Consent Mode sozinhas (consentimento integrado), sem mudança no GTM.
+
 | Evento (dataLayer) | Quando | Parâmetros |
 |---|---|---|
 | `whatsapp_click` | clique em qualquer link do WhatsApp (`data-cta` + `wa.me`) | `cta_location` (ex.: `hero`, `areia-calculadora`), `link_url` |

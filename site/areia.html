@@ -24,9 +24,15 @@
 <script>document.documentElement.classList.add('js')</script>
 
 <!-- Google Tag Manager (GTM-WXVXVZSF). GA4, conversões do Google Ads e eventos são configurados no contêiner
-     (importar tracking/gtm-construbloc.json). A página só envia eventos ao dataLayer, nunca chama gtag direto. -->
+     (importar tracking/gtm-construbloc.json). A página só envia eventos ao dataLayer; o único gtag() é o do Consent Mode abaixo (sem gtag.js). -->
 <script>
 window.dataLayer = window.dataLayer || [];
+// Consent Mode v2 (LGPD), antes do GTM. Sem resposta: GA4 e conversões do Ads medem, anúncios personalizados não.
+// "Só o essencial" nega tudo; "Aceitar" libera tudo. Escolha em localStorage cb-consent (aviso em /js/consent.js).
+function gtag(){dataLayer.push(arguments);}
+(function(){var c=null;try{c=localStorage.getItem('cb-consent')}catch(e){}var g=c==='essential'?'denied':'granted';
+gtag('consent','default',{analytics_storage:g,ad_storage:g,ad_user_data:g,ad_personalization:c==='accepted'?'granted':'denied',functionality_storage:'granted',security_storage:'granted'});})();
+gtag('set','url_passthrough',true);
 window.dataLayer.push({ page_type: 'areia' });
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WXVXVZSF');
 </script>
@@ -420,6 +426,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600
 </script>
 <!-- Coletor first-party do /dashboard (anônimo, roda em paralelo ao GTM; ver DASHBOARD.md) -->
 <script src="/js/tracker.js" defer></script>
+<script src="/js/consent.js" defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXVXVZSF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -774,7 +781,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600
         </ul>
       </div>
     </div>
-    <p class="fine">CONSTRUBLOC COMÉRCIO DE MATERIAIS PARA CONSTRUÇÃO LTDA · CNPJ 15.453.276/0001-00 · © 2026 Todos os direitos reservados.</p>
+    <p class="fine">CONSTRUBLOC COMÉRCIO DE MATERIAIS PARA CONSTRUÇÃO LTDA · CNPJ 15.453.276/0001-00 · © 2026 Todos os direitos reservados. · <a href="/politica-de-privacidade" data-cta="footer-privacidade">Política de privacidade</a></p>
   </div>
 </footer>
 
