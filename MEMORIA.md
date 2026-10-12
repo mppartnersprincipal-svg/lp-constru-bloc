@@ -6,7 +6,7 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 - Domínio: www.construbloc.site (sem www redireciona). Repo: github.com/mppartnersprincipal-svg/lp-constru-bloc
 - Tracking só via GTM `GTM-WXVXVZSF` (GA4 `G-0J96MVPZ7W`, Ads `AW-11368504142`). Conversões Ads vêm das tags GTM, não importar eventos-chave do GA4.
-- Foco em ensacados 20 kg (areia R$ 8, brita R$ 9). Granel/m³ removido do posicionamento (margem melhor no ensacado).
+- Foco em ensacados 20 kg (areia R$ 10, brita R$ 10, desde 12/10/2026). Granel/m³ removido do posicionamento (margem melhor no ensacado).
 - Calculadora: areia 70 sacos/m³, brita 75 sacos/m³.
 - WhatsApp (62) 3579-1166; ligação (62) 3091-1091.
 - Fotos de produto: Wikimedia Commons (domínio público/CC0), formato 16:7, WebP 640/960.
@@ -48,3 +48,6 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 ### 2026-10-07
 - chore: Search Console verificado (propriedade de domínio construbloc.site via TXT), sitemap enviado e indexação pedida para /, /areia e /brita.
+
+### 2026-10-12
+- fix: reajuste dos ensacados pedido pelo cliente, areia R$ 8 → R$ 10 e brita R$ 9 → R$ 10 (areia.html, brita.html, llms.txt, sitemap, Areias e Britas.txt).
