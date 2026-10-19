@@ -1,4 +1,4 @@
-// GET /api/dashboard?de=YYYY-MM-DD&ate=YYYY-MM-DD&origem=<canal>&pagina=home|areia|brita&jornadas=conv|calc|todas
+// GET /api/dashboard?de=YYYY-MM-DD&ate=YYYY-MM-DD&origem=<canal>&pagina=home|areia|brita|ferragens&jornadas=conv|calc|todas
 // GET /api/dashboard?live=1  → últimos eventos (feed ao vivo)
 // Autenticação: Authorization: Bearer <token de /api/login>
 // O Google Ads fica em /api/google-ads (consulta separada, não segura o painel).

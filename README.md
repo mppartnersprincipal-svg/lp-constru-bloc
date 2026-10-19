@@ -6,6 +6,7 @@ Landing page da Construbloc — material de construção em Goiânia. Projeto da
 
 - `site/` — a página publicada: `index.html` (HTML + CSS + JS inline) e `assets/img/` (imagens otimizadas)
 - `site/areia.html` → `/areia` e `site/brita.html` → `/brita` — páginas de produto para os grupos de anúncio do Google Ads (areia e brita). Preços vêm de `Areias e Britas.txt`; ao mudar um preço, atualize o hero, os cards, o FAQ visível, o JSON-LD (`Product`/`FAQPage`), as constantes da calculadora no script e o `site/llms.txt`. O CSS das duas é idêntico — altere nas duas.
+- `site/ferragens.html` → `/ferragens` — categorias da loja (hidráulica e chuveiros, elétrica, fechaduras, ferramentas), **sem preço** (consulta pelo WhatsApp). Fotos reais da loja (`loja-*.webp`, as mesmas da home) e o encarte da ducha Zagonel (`ducha-zagonel-*.webp`). Mesmo CSS base de areia/brita, sem calculadora.
 - `site/sitemap.xml`, `site/robots.txt`, `site/llms.txt` — SEO e busca por IA. Atualize `lastmod` no sitemap quando uma página mudar.
 - `site/assets/img/produtos/*-640.webp` / `*-960.webp` — fotos ilustrativas dos produtos (recorte 16:7), todas do Wikimedia Commons em domínio público ou CC0 (uso comercial livre, sem crédito obrigatório): areia fina [Sand.jpg](https://commons.wikimedia.org/wiki/File:Sand.jpg), areia média [Sand_Properties.jpg](https://commons.wikimedia.org/wiki/File:Sand_Properties.jpg), areia grossa [Coarse_yellow_sand.jpg](https://commons.wikimedia.org/wiki/File:Coarse_yellow_sand.jpg), brita 0 [Gravel035_16K_Color.png](https://commons.wikimedia.org/wiki/File:Gravel035_16K_Color.png), brita 1 [Gravel_Stones.jpg](https://commons.wikimedia.org/wiki/File:Gravel_Stones.jpg). Para trocar por fotos próprias, mantenha os mesmos nomes e o formato 16:7.
 - `Copy_LP_Construbloc.md` — copy completa por seção
@@ -25,7 +26,7 @@ Abra `site/index.html` no navegador, ou rode `npm run dev` (site + `/api` + `/da
 
 As 3 páginas carregam só o **Google Tag Manager** (`GTM-WXVXVZSF`) e enviam eventos ao `dataLayer`. GA4 (`G-0J96MVPZ7W`) e as conversões do Google Ads (`AW-11368504142`) são configurados no contêiner, nunca direto na página: não adicione `gtag.js` no HTML, senão tudo conta em dobro.
 
-Cada página define `page_type` (`home`, `areia`, `brita`) antes do GTM carregar.
+Cada página define `page_type` (`home`, `areia`, `brita`, `ferragens`) antes do GTM carregar.
 
 **Consentimento (LGPD):** antes do GTM, cada página define o padrão do Google Consent Mode v2 a partir de `localStorage['cb-consent']`: sem resposta mede GA4/Ads com anúncios personalizados negados; `essential` nega tudo; `accepted` libera tudo. O aviso fica em `site/js/consent.js` (dispara `cookie_consent` com `consent_choice`) e a política em `site/politica-de-privacidade.html`. As tags do contêiner respeitam o Consent Mode sozinhas (consentimento integrado), sem mudança no GTM.
 

@@ -100,3 +100,11 @@ test("caps counters and sizes that the database sums or stores as int", () => {
   assert.equal(b.session.max_scroll_pct, 100);
   assert.equal(b.session.screen_w, 10000);
 });
+
+test('accepts the /ferragens page type and drops unknown ones', () => {
+  const ok = buildBatch({ ...first({ landing_path: '/ferragens' }), pt: 'ferragens' }, { now: NOW });
+  assert.equal(ok.session.landing_page_type, 'ferragens');
+  assert.equal(ok.rows[0].page_type, 'ferragens');
+  const unknown = buildBatch({ ...first(), pt: 'loja-x' }, { now: NOW });
+  assert.equal(unknown.session.landing_page_type, null);
+});

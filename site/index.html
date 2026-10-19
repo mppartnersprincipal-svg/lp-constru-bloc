@@ -148,8 +148,8 @@ h4{margin:0}
   .nav a:hover{border-color:var(--cb-gold-500)}
 }
 .header .btn{min-height:44px;padding:0 14px;font-size:14px}
-/* Atalhos Areia/Brita: faixa no celular, botões dourados no desktop */
-.hprod{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--cb-line-200);background:var(--cb-gold-500)}
+/* Atalhos Areia/Brita/Ferragens: faixa no celular, botões dourados no desktop */
+.hprod{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--cb-line-200);background:var(--cb-gold-500)}
 .hprod a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:var(--hstrip);color:var(--cb-blue-900);font:700 14px var(--font-body);text-transform:uppercase;letter-spacing:.04em}
 .hprod a+a{border-left:1px solid rgba(0,8,56,.18)}
 .hprod a:hover{background:var(--cb-gold-600)}
@@ -168,6 +168,7 @@ h4{margin:0}
   .nav{gap:16px;font-size:13px}
   .nav .nav-prod{padding:8px 10px}
   .nav .nav-prod+.nav-prod{margin-left:-8px}
+  .nav .nav-opt{display:none} /* 3 botões de produto não cabem com todos os links até 1280px */
 }
 .header .btn .full{display:none}
 @media (min-width:480px){.header .btn .full{display:inline}.header .btn .short{display:none}}
@@ -458,7 +459,8 @@ h4{margin:0}
     <nav class="nav" aria-label="Seções">
       <a class="nav-prod" href="/areia" data-cta="header-areia"><svg class="ic" aria-hidden="true"><use href="#i-mountain"/></svg>Areia</a>
       <a class="nav-prod" href="/brita" data-cta="header-brita"><svg class="ic" aria-hidden="true"><use href="#i-mountain"/></svg>Brita</a>
-      <a href="#loja">A loja</a>
+      <a class="nav-prod" href="/ferragens" data-cta="header-ferragens"><svg class="ic" aria-hidden="true"><use href="#i-wrench"/></svg>Ferragens</a>
+      <a class="nav-opt" href="#loja">A loja</a>
       <a href="#produtos">Produtos</a>
       <a href="#servicos">Serviços</a>
       <a href="#como-comprar">Como comprar</a>
@@ -468,9 +470,10 @@ h4{margin:0}
       <svg class="ic" aria-hidden="true"><use href="#i-wa"/></svg><span class="short">Orçamento</span><span class="full">Pedir orçamento</span>
     </a>
   </div>
-  <nav class="hprod" aria-label="Areia e brita ensacadas">
-    <a href="/areia" data-cta="header-areia-m"><svg class="ic" aria-hidden="true"><use href="#i-mountain"/></svg>Areia ensacada</a>
-    <a href="/brita" data-cta="header-brita-m"><svg class="ic" aria-hidden="true"><use href="#i-mountain"/></svg>Brita ensacada</a>
+  <nav class="hprod" aria-label="Areia, brita e ferragens">
+    <a href="/areia" data-cta="header-areia-m"><svg class="ic" aria-hidden="true"><use href="#i-mountain"/></svg>Areia</a>
+    <a href="/brita" data-cta="header-brita-m"><svg class="ic" aria-hidden="true"><use href="#i-mountain"/></svg>Brita</a>
+    <a href="/ferragens" data-cta="header-ferragens-m"><svg class="ic" aria-hidden="true"><use href="#i-wrench"/></svg>Ferragens</a>
   </nav>
 </header>
 
@@ -607,9 +610,9 @@ h4{margin:0}
         <span class="icon-box"><svg class="ic" aria-hidden="true"><use href="#i-roller"/></svg></span>
         <div><h3>Acabamento</h3><p>Revestimentos, louças, metais, tintas e o toque final.</p><span class="go">Pedir orçamento<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></span></div>
       </a></li>
-      <li class="rv"><a class="card cat" href="https://wa.me/556235791166" data-wa="Olá! Quero um orçamento de ferragens." data-cta="cat-ferragens" target="_blank" rel="noopener">
+      <li class="rv"><a class="card cat" href="/ferragens" data-cta="cat-ferragens">
         <span class="icon-box"><svg class="ic" aria-hidden="true"><use href="#i-wrench"/></svg></span>
-        <div><h3>Ferragens em Geral</h3><p>Ferramentas, fixadores e itens de manutenção.</p><span class="go">Pedir orçamento<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></span></div>
+        <div><h3>Ferragens em Geral</h3><p>Hidráulica, elétrica, fechaduras e ferramentas.</p><span class="go">Ver categorias<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></span></div>
       </a></li>
     </ul>
     <div class="cta-row rv">
@@ -801,10 +804,11 @@ h4{margin:0}
       <div>
         <h2>Horário</h2>
         <p><strong style="color:#fff">Aberto todos os dias</strong><br>Segunda a domingo, das 7h às 19h</p>
-        <h2 style="margin-top:28px">Areia e brita</h2>
+        <h2 style="margin-top:28px">Produtos</h2>
         <ul>
           <li><a href="/areia" data-cta="footer-areia">Areia: tipos e preços</a></li>
           <li><a href="/brita" data-cta="footer-brita">Brita: tipos e preços</a></li>
+          <li><a href="/ferragens" data-cta="footer-ferragens">Ferragens, hidráulica e elétrica</a></li>
         </ul>
       </div>
       <div>

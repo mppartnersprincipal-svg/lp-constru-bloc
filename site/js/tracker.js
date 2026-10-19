@@ -215,7 +215,7 @@
     track('click', p);
   }, true);
 
-  // Link para outra página do site (/areia, /brita, /): envia a fila antes do unload, porque alguns
+  // Link para outra página do site (/areia, /brita, /ferragens, /): envia a fila antes do unload, porque alguns
   // navegadores (in-app, headless) descartam requisições disparadas no pagehide. Fica no bubble de
   // window para rodar DEPOIS do track() da página (cta_click entra no mesmo lote).
   addEventListener('click', function (e) {

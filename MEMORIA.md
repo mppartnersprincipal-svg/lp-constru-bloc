@@ -10,6 +10,7 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - Calculadora: areia 70 sacos/m³, brita 75 sacos/m³.
 - Cookies: Google mede até a pessoa clicar "Só o essencial"; remarketing só com "Aceitar" (decisão do Pedro, para não derrubar conversões do Ads). Coletor mede 100%.
 - WhatsApp (62) 3579-1166; ligação (62) 3091-1091.
+- Página /ferragens (hidráulica, elétrica, fechaduras, ferramentas) **sem preço**, só consulta no WhatsApp (decisão do Pedro, 19/10). Usa as fotos reais da loja até o cliente mandar fotos novas.
 - Fotos de produto: Wikimedia Commons (domínio público/CC0), formato 16:7, WebP 640/960.
 - Dashboard /dashboard: tabelas `construbloc_*` no Supabase compartilhado (Sólida/Gaspar). Volume de caminhão = 3 m³ ou mais (`TRUCK_M3`). Filtro de página = página de entrada. GA4 via conta de serviço da agência `dashboard-ga4@mp-dashboard-501816` (Leitor; propriedade 556611801). UTMs do Ads no sufixo do URL final de cada grupo.
 
@@ -18,6 +19,7 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - Confirmar no GA4: `whatsapp_click` e `phone_click` como evento-chave + dimensões personalizadas (ver README).
 - Testar tags no GTM Preview no site publicado.
 - Dashboard: confirmar que os próximos cliques do Ads chegam com UTM (sufixo por grupo: areia-brita-goiania/areia|brita, material-construcao-perto-de-mim/material-construcao).
+- Ferragens: cliente ainda vai mandar fotos novas de chuveiros/hidráulica/elétrica (salvar em `Fotos Loja/`); confirmar com ele os itens listados em cada categoria (tubos, disjuntores etc. foram inferidos).
 
 ## Histórico
 
@@ -52,3 +54,6 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 ### 2026-10-12
 - fix: reajuste dos ensacados pedido pelo cliente, areia R$ 8 → R$ 10 e brita R$ 9 → R$ 10 (areia.html, brita.html, llms.txt, sitemap, Areias e Britas.txt).
 - feat: aviso de cookies com Consent Mode v2 + /politica-de-privacidade (`js/consent.js`, head das 3 páginas, tracker, migration 0002 aplicada) — escolha vai ao dashboard; "Só o essencial" apaga id de visitante.
+
+### 2026-10-19
+- feat: página /ferragens (`site/ferragens.html`, ducha Zagonel em `ducha-zagonel-*.webp`), links no header/rodapé da home, areia e brita; card "Ferragens em Geral" da home agora leva a /ferragens; `ferragens` aceito como page_type no coletor/dashboard (payload, report, filtros) + testes; sitemap e llms.txt — pedido do cliente por página de itens internos da loja.

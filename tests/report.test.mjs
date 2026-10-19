@@ -65,3 +65,14 @@ test('trail shows the cookie choice in the visitor journey', () => {
   const ev = (choice) => ({ ts: '2026-10-12T12:00:00Z', name: 'cookie_consent', page_type: 'home', props: { consent_choice: choice } });
   assert.deepEqual(trail([ev('accepted'), ev('essential')]).map((s) => s.text), ['Cookies: aceitou', 'Cookies: só o essencial']);
 });
+
+test('ferragens funnel follows the page sections', () => {
+  const evs = [
+    { session_id: 'f1', ts: '2026-10-19T10:00:00Z', name: 'page_view', props: {}, page_type: 'ferragens' },
+    { session_id: 'f1', ts: '2026-10-19T10:00:05Z', name: 'section_view', props: { section: 'categorias' }, page_type: 'ferragens' },
+  ];
+  const f = funnels(evs).ferragens;
+  assert.equal(f.sessions, 1);
+  assert.equal(f.steps.find((s) => s.key === 'categorias').value, 1);
+  assert.equal(f.steps.find((s) => s.key === 'destaque').value, 0);
+});

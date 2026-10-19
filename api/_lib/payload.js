@@ -6,7 +6,7 @@ export const EVENTS = new Set([
   'page_view', 'page_leave', 'click', 'section_view',
   'whatsapp_click', 'phone_click', 'cta_click', 'calculator_use', 'faq_open', 'cookie_consent',
 ]);
-export const PAGE_TYPES = new Set(['home', 'areia', 'brita']);
+export const PAGE_TYPES = new Set(['home', 'areia', 'brita', 'ferragens']);
 export const MAX_EVENTS = 50;
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

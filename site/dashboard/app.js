@@ -5,7 +5,7 @@
   var TOKEN_KEY = 'cb-dash-token';
   var LIVE_MS = 30000;
   var CH = { google_ads: 'Google Ads', google_organic: 'Google (orgânico)', instagram: 'Instagram', meta_ads: 'Meta Ads', facebook: 'Facebook', direct: 'Direto', referral: 'Indicação', search_other: 'Outros buscadores', other: 'Outro' };
-  var PAGE = { home: 'Home', areia: 'Areia', brita: 'Brita', '?': 'Não identificada' };
+  var PAGE = { home: 'Home', areia: 'Areia', brita: 'Brita', ferragens: 'Ferragens', '?': 'Não identificada' };
   var CONSENT = { accepted: 'Aceitou', essential: 'Só o essencial', nao_respondeu: 'Não respondeu' };
   var TYPE = { fina: 'fina', media: 'média', grossa: 'grossa', zero: '0', um: '1' };
   var USAGE = { concreto: 'Concreto', camada: 'Camada de brita' };
