@@ -7,14 +7,14 @@ export const SECTIONS = {
   home: ['topo', 'porque', 'loja', 'produtos', 'servicos', 'publico', 'numeros', 'pagamento', 'como-comprar', 'duvidas', 'cta-final'],
   areia: ['topo', 'resumo', 'precos', 'por-que-ensacada', 'qual-areia', 'comprar', 'duvidas', 'xsell', 'cta-final'],
   brita: ['topo', 'resumo', 'precos', 'por-que-ensacada', 'qual-brita', 'comprar', 'duvidas', 'xsell', 'cta-final'],
-  ferragens: ['topo', 'resumo', 'categorias', 'destaque', 'comprar', 'duvidas', 'xsell', 'cta-final'],
+  ferragens: ['topo', 'resumo', 'categorias', 'comprar', 'duvidas', 'xsell', 'cta-final'],
 };
 export const SECTION_LABEL = {
   topo: 'Hero', porque: 'Por que a Construbloc', loja: 'A loja', produtos: 'Produtos', servicos: 'Serviços',
   publico: 'Para quem', numeros: 'Números', pagamento: 'Pagamento', 'como-comprar': 'Como comprar',
   duvidas: 'FAQ', 'cta-final': 'CTA final', resumo: 'Resumo', precos: 'Preços', 'por-que-ensacada': 'Por que ensacada',
   'qual-areia': 'Qual areia usar', 'qual-brita': 'Qual brita usar', comprar: 'Como comprar', xsell: 'Outros produtos',
-  categorias: 'Categorias', destaque: 'Destaque (ducha)',
+  categorias: 'Categorias',
 };
 
 // Calculadora: a partir de 3 m³ (≈ 210 sacos de areia / 225 de brita) o cliente costuma pensar em

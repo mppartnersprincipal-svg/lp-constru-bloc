@@ -10,7 +10,7 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - Calculadora: areia 70 sacos/m³, brita 75 sacos/m³.
 - Cookies: Google mede até a pessoa clicar "Só o essencial"; remarketing só com "Aceitar" (decisão do Pedro, para não derrubar conversões do Ads). Coletor mede 100%.
 - WhatsApp (62) 3579-1166; ligação (62) 3091-1091.
-- Página /ferragens (hidráulica, elétrica, fechaduras, ferramentas) **sem preço**, só consulta no WhatsApp (decisão do Pedro, 19/10). Usa as fotos reais da loja até o cliente mandar fotos novas.
+- Página /ferragens (hidráulica, elétrica, fechaduras, ferramentas) **sem preço**, só consulta no WhatsApp (decisão do Pedro, 19/10). Usa as fotos reais da loja até o cliente mandar fotos novas. Chuveiro/ducha: só Lorenzetti; sem Zagonel e sem destaque de fechaduras/cadeados (pouco estoque), a foto da gôndola pode ficar (cliente, 20/10).
 - Fotos de produto: Wikimedia Commons (domínio público/CC0), formato 16:7, WebP 640/960.
 - Dashboard /dashboard: tabelas `construbloc_*` no Supabase compartilhado (Sólida/Gaspar). Volume de caminhão = 3 m³ ou mais (`TRUCK_M3`). Filtro de página = página de entrada. GA4 via conta de serviço da agência `dashboard-ga4@mp-dashboard-501816` (Leitor; propriedade 556611801). UTMs do Ads no sufixo do URL final de cada grupo.
 
@@ -57,3 +57,6 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 ### 2026-10-19
 - feat: página /ferragens (`site/ferragens.html`, ducha Zagonel em `ducha-zagonel-*.webp`), links no header/rodapé da home, areia e brita; card "Ferragens em Geral" da home agora leva a /ferragens; `ferragens` aceito como page_type no coletor/dashboard (payload, report, filtros) + testes; sitemap e llms.txt — pedido do cliente por página de itens internos da loja.
+
+### 2026-10-20
+- fix: /ferragens sem a seção da ducha Zagonel (produto acabou, imagens removidas), chuveiros só Lorenzetti e card "Ferragens e fechaduras" virou "Ferragens e fixação" (fechaduras escassas); seção destaque fora do funil do dashboard; llms.txt e README.

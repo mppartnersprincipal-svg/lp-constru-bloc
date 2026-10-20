@@ -74,5 +74,5 @@ test('ferragens funnel follows the page sections', () => {
   const f = funnels(evs).ferragens;
   assert.equal(f.sessions, 1);
   assert.equal(f.steps.find((s) => s.key === 'categorias').value, 1);
-  assert.equal(f.steps.find((s) => s.key === 'destaque').value, 0);
+  assert.equal(f.steps.find((s) => s.key === 'comprar').value, 0);
 });
