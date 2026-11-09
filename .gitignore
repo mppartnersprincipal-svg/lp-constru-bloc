@@ -15,3 +15,6 @@ desktop.ini
 .env
 .env.local
 node_modules/
+
+# Estado local de plugins do Claude Code
+.omc/
