@@ -36,6 +36,14 @@
       ]
     },
     {
+      "source": "/favicon.ico",
+      "headers": [{ "key": "Content-Type", "value": "image/x-icon" }]
+    },
+    {
+      "source": "/site.webmanifest",
+      "headers": [{ "key": "Content-Type", "value": "application/manifest+json" }]
+    },
+    {
       "source": "/js/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }]
     }

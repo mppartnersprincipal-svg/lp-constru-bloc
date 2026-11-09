@@ -1,0 +1,14 @@
+{
+  "name": "Construbloc",
+  "short_name": "Construbloc",
+  "description": "Materiais de construção e ferragista em Goiânia",
+  "start_url": "/",
+  "display": "browser",
+  "theme_color": "#002080",
+  "background_color": "#FFFFFF",
+  "icons": [
+    { "src": "/favicon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon-512x512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

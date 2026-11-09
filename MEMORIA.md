@@ -11,6 +11,7 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - Cookies: Google mede até a pessoa clicar "Só o essencial"; remarketing só com "Aceitar" (decisão do Pedro, para não derrubar conversões do Ads). Coletor mede 100%.
 - WhatsApp (62) 3579-1166; ligação (62) 3091-1091.
 - Página /ferragens (hidráulica, elétrica, fechaduras, ferramentas) **sem preço**, só consulta no WhatsApp (decisão do Pedro, 19/10). Usa as fotos reais da loja até o cliente mandar fotos novas. Chuveiro/ducha: só Lorenzetti; sem Zagonel e sem destaque de fechaduras/cadeados (pouco estoque), a foto da gôndola pode ficar (cliente, 20/10).
+- Favicon: pico do símbolo (martelo + janela + chaminé) em fundo azul #002080, arquivos na raiz do `site/` com caminhos absolutos; gerado a partir de `Design System Construbloc/assets/symbol-color.png`. JSON-LD `logo` = `assets/img/logo-quadrada-512.png`.
 - Fotos de produto: Wikimedia Commons (domínio público/CC0), formato 16:7, WebP 640/960.
 - Dashboard /dashboard: tabelas `construbloc_*` no Supabase compartilhado (Sólida/Gaspar). Volume de caminhão = 3 m³ ou mais (`TRUCK_M3`). Filtro de página = página de entrada. GA4 via conta de serviço da agência `dashboard-ga4@mp-dashboard-501816` (Leitor; propriedade 556611801). UTMs do Ads no sufixo do URL final de cada grupo.
 
@@ -60,3 +61,6 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 ### 2026-10-20
 - fix: /ferragens sem a seção da ducha Zagonel (produto acabou, imagens removidas), chuveiros só Lorenzetti e card "Ferragens e fechaduras" virou "Ferragens e fixação" (fechaduras escassas); seção destaque fora do funil do dashboard; llms.txt e README.
+
+### 2026-11-09
+- fix: favicon no padrão do Google (`favicon.ico` 16/32/48 e PNG 48/96/192/512 na raiz, `site.webmanifest`, caminhos absolutos no head das páginas públicas, JSON-LD `logo` quadrado, content-type no `vercel.json`) — Google mostrava o globo genérico (ícone de 32px + caminho relativo quebrando em /areia/). `/dashboard` não foi alterado; só o `favicon-32.png` dele ganhou o desenho novo.
