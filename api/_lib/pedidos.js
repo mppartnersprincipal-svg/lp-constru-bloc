@@ -300,6 +300,17 @@ export function resumoVendas(todos, { de, ate }) {
   };
 }
 
+/** Meses que têm pedidos (para o menu de período), do mais recente para o mais antigo. */
+export function mesesComPedidos(pedidos) {
+  const m = new Map();
+  for (const p of pedidos) {
+    const k = String(p.data).slice(0, 7);
+    const atual = m.get(k) || { mes: k, pedidos: 0, total: 0 };
+    m.set(k, { ...atual, pedidos: atual.pedidos + 1, total: atual.total + Number(p.total) });
+  }
+  return [...m.values()].map((x) => ({ ...x, total: centavos(x.total) })).sort((a, b) => (a.mes < b.mes ? 1 : -1));
+}
+
 /** Filtro da lista por período e busca (nome, telefone ou produto). Em JS: nada da busca entra na URL do banco. */
 export function filtrarPedidos(pedidos, { de, ate, busca }) {
   const q = normalizarChave(busca);

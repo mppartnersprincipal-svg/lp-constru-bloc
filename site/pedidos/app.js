@@ -1,13 +1,15 @@
-/* Cadastro de pedidos da Construbloc (/pedidos). Consome /api/pedidos e /api/login.
- * Mesmo token do /dashboard (localStorage 'cb-dash-token'). O total exibido é só prévia: quem calcula é o servidor.
- * Tudo que vem da API passa por esc(). */
+/* Controle de pedidos da Construbloc (/pedidos): aba Pedidos (cadastro e lista) e aba Vendas (vendas.js).
+ * Consome /api/pedidos e /api/login. Mesmo token do /dashboard (localStorage 'cb-dash-token').
+ * O total exibido no formulário é só prévia: quem calcula é o servidor. Tudo que vem da API passa por esc().
+ * Estado na URL: ?aba=pedidos|vendas&periodo=AAAA-MM|30d|tudo */
 (function () {
   'use strict';
   var TOKEN_KEY = 'cb-dash-token';
   var MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
   var ENTREGA = { entrega: 'Entrega', retirada: 'Retirada', indefinido: 'Entrega não informada' };
+  var ABAS = ['pedidos', 'vendas'];
   var token = null;
-  var state = { mes: null, busca: '', pedidos: [], editando: null };
+  var state = { aba: 'pedidos', periodo: null, meses: [], busca: '', pedidos: [], editando: null };
   var $ = function (s) { return document.querySelector(s); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
   var money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -57,39 +59,70 @@
     });
   }
 
-  // ---------- Mês (na URL: ?mes=2026-11) ----------
+  // ---------- Abas e período (na URL) ----------
+  var MES_RE = /^\d{4}-(0[1-9]|1[0-2])$/;
+  function periodoValido(p) { return MES_RE.test(p || '') || p === '30d' || p === 'tudo'; }
   function readUrl() {
-    var m = new URLSearchParams(location.search).get('mes');
-    state.mes = /^\d{4}-(0[1-9]|1[0-2])$/.test(m || '') ? m : hoje().slice(0, 7);
+    var u = new URLSearchParams(location.search);
+    state.aba = ABAS.indexOf(u.get('aba')) >= 0 ? u.get('aba') : 'pedidos';
+    var p = u.get('periodo') || u.get('mes'); // ?mes= era o formato antigo
+    state.periodo = periodoValido(p) ? p : hoje().slice(0, 7);
   }
-  function mesRange(m) {
-    var y = Number(m.slice(0, 4)), mo = Number(m.slice(5, 7));
-    var last = new Date(Date.UTC(y, mo, 0)).getUTCDate();
-    return { de: m + '-01', ate: m + '-' + String(last).padStart(2, '0') };
+  function writeUrl() { history.replaceState(null, '', '?aba=' + state.aba + '&periodo=' + state.periodo); }
+  function addDias(ymd, n) { var d = new Date(ymd + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+  function nomeMes(m) { return MESES[Number(m.slice(5, 7)) - 1] + ' ' + m.slice(0, 4); }
+  /** Datas do período escolhido. "tudo" começa no mês mais antigo com pedidos. */
+  function periodoRange(p) {
+    if (MES_RE.test(p)) {
+      var y = Number(p.slice(0, 4)), mo = Number(p.slice(5, 7));
+      return { de: p + '-01', ate: p + '-' + String(new Date(Date.UTC(y, mo, 0)).getUTCDate()).padStart(2, '0'), nome: nomeMes(p) };
+    }
+    if (p === '30d') return { de: addDias(hoje(), -29), ate: hoje(), nome: 'Últimos 30 dias' };
+    // Antes da 1ª resposta não se sabe o mês mais antigo: pede desde 2023 (a API limita a 400 dias)
+    var primeiro = state.meses.length ? state.meses[state.meses.length - 1].mes : null;
+    return { de: primeiro ? primeiro + '-01' : '2023-01-01', ate: hoje(), nome: primeiro ? 'Desde ' + nomeMes(primeiro).toLowerCase() : 'Desde o início' };
   }
-  function shiftMes(delta) {
-    var y = Number(state.mes.slice(0, 4)), mo = Number(state.mes.slice(5, 7)) - 1 + delta;
-    var d = new Date(Date.UTC(y, mo, 1));
-    state.mes = d.toISOString().slice(0, 7);
-    history.replaceState(null, '', '?mes=' + state.mes);
-    load();
+  function montarPeriodos() {
+    var atual = hoje().slice(0, 7), meses = state.meses.slice();
+    if (!meses.some(function (m) { return m.mes === atual; })) meses.unshift({ mes: atual, pedidos: 0 });
+    if (MES_RE.test(state.periodo) && !meses.some(function (m) { return m.mes === state.periodo; })) meses.push({ mes: state.periodo, pedidos: 0 });
+    meses.sort(function (a, b) { return a.mes < b.mes ? 1 : -1; });
+    $('#periodo').innerHTML = '<optgroup label="Mês">' + meses.map(function (m) {
+      return '<option value="' + esc(m.mes) + '">' + esc(nomeMes(m.mes)) + ' (' + m.pedidos + (m.pedidos === 1 ? ' pedido' : ' pedidos') + ')</option>';
+    }).join('') + '</optgroup><optgroup label="Outros períodos"><option value="30d">Últimos 30 dias</option><option value="tudo">Desde o início</option></optgroup>';
+    $('#periodo').value = state.periodo;
   }
-  $('#prev').addEventListener('click', function () { shiftMes(-1); });
-  $('#next').addEventListener('click', function () { shiftMes(1); });
+  $('#periodo').addEventListener('change', function () { state.periodo = $('#periodo').value; writeUrl(); load(); });
+  function mostrarAba() {
+    ABAS.forEach(function (a) {
+      var ativa = a === state.aba;
+      $('#tab-' + a).setAttribute('aria-selected', String(ativa));
+      $('#tab-' + a).classList.toggle('is-active', ativa);
+      $('#painel-' + a).classList.toggle('hidden', !ativa);
+    });
+    $('#novo').classList.toggle('hidden', state.aba !== 'pedidos');
+  }
+  ABAS.forEach(function (a) {
+    $('#tab-' + a).addEventListener('click', function () { if (state.aba === a) return; state.aba = a; writeUrl(); mostrarAba(); load(); });
+  });
 
-  // ---------- Lista ----------
+  // ---------- Carregar ----------
   var loadSeq = 0;
   function load() {
-    var seq = ++loadSeq, r = mesRange(state.mes);
-    $('#month-title').textContent = MESES[Number(state.mes.slice(5, 7)) - 1] + ' ' + state.mes.slice(0, 4);
-    $('#next').disabled = state.mes >= hoje().slice(0, 7);
+    var seq = ++loadSeq, r = periodoRange(state.periodo);
+    mostrarAba();
     $('#list-error').textContent = '';
     $('#list').innerHTML = '<div class="empty">Carregando…</div>';
     api('GET', new URLSearchParams({ de: r.de, ate: r.ate }).toString()).then(function (d) {
       if (seq !== loadSeq) return;
       state.pedidos = d.pedidos;
+      state.meses = d.meses || [];
+      montarPeriodos();
       $('#produtos-list').innerHTML = d.produtos.map(function (p) { return '<option value="' + esc(p) + '"></option>'; }).join('');
       render();
+      // "tudo" depende do mês mais antigo, que só se conhece depois da 1ª resposta
+      var r2 = periodoRange(state.periodo);
+      if (state.aba === 'vendas' && window.CBVendas) window.CBVendas.carregar({ de: r2.de, ate: r2.ate, nome: r2.nome, token: token, onAuth: showLogin });
     }).catch(function (e) { if (e.message !== '401' && seq === loadSeq) { $('#list').innerHTML = ''; $('#list-error').textContent = e.message; } });
   }
   function filtrados() {
@@ -107,12 +140,12 @@
     var fat = all.reduce(function (s, p) { return s + Number(p.total); }, 0);
     var rec = all.filter(function (p) { return p.compra_n > 1; }).length;
     $('#kpis').innerHTML = [
-      ['Vendido no mês', brl(fat), 'gold'], ['Pedidos', String(all.length), ''],
+      ['Vendido', brl(fat), 'gold'], ['Pedidos', String(all.length), ''],
       ['Ticket médio', brl(all.length ? fat / all.length : 0), ''], ['Recompras', String(rec), 'gold'],
     ].map(function (k) { return '<div class="kpi ' + k[2] + '"><div class="lbl">' + k[0] + '</div><div class="val">' + esc(k[1]) + '</div></div>'; }).join('');
     var list = filtrados();
     if (!list.length) {
-      $('#list').innerHTML = '<div class="empty">' + (all.length ? 'Nenhum pedido encontrado na busca.' : 'Nenhum pedido lançado neste mês.<br>Toque em “+ Novo pedido” para começar.') + '</div>';
+      $('#list').innerHTML = '<div class="empty">' + (all.length ? 'Nenhum pedido encontrado na busca.' : 'Nenhum pedido lançado neste período.<br>Toque em “+ Novo pedido” para começar.') + '</div>';
       return;
     }
     $('#list').innerHTML = list.map(card).join('');
@@ -271,8 +304,9 @@
     req.then(function (r) {
       closeForm();
       toast(editando ? 'Pedido atualizado' : 'Pedido salvo · ' + brl(r.pedido.total));
+      // Se estiver vendo um mês, mostra o mês do pedido salvo
       var mes = r.pedido.data.slice(0, 7);
-      if (mes !== state.mes) { state.mes = mes; history.replaceState(null, '', '?mes=' + mes); }
+      if (MES_RE.test(state.periodo) && mes !== state.periodo) { state.periodo = mes; writeUrl(); }
       load();
     }).catch(function (err) { if (err.message !== '401') $('#form-error').textContent = err.message; })
       .then(function () { btn.disabled = false; });

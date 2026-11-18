@@ -95,16 +95,18 @@ mensagem segura (sem repassar a resposta do Google) e não afetam as outras seç
 - Se o GA4 aplicar limite de privacidade (`subjectToThresholding`), a seção avisa que alguns números podem estar abaixo do real.
 - O GA4 diverge do coletor próprio por consentimento, bloqueadores, modelagem e processamento (até 48 h).
 
-## Pedidos (/pedidos) e seção Vendas
+## Pedidos (/pedidos): abas Pedidos e Vendas
 
 Substitui a planilha "Controle de Pedidos - Leads Google" que o Vinícius preenchia e mandava todo mês.
 
-- **/pedidos** (`site/pedidos/`): tela para o celular. Mesmo login e mesmo token do /dashboard (`localStorage['cb-dash-token']`). Lista por mês, busca por nome, telefone ou produto, novo pedido, editar e excluir (dois toques).
+- **/pedidos** (`site/pedidos/`): tela para o celular, separada do /dashboard (decisão do Pedro: os dados de venda não entram no painel principal). Mesmo login e mesmo token (`localStorage['cb-dash-token']`). Duas abas e um menu suspenso de **Período** (cada mês com pedidos, "Últimos 30 dias" e "Desde o início"); estado na URL `?aba=pedidos|vendas&periodo=AAAA-MM|30d|tudo`.
+  - **Aba Pedidos** (`app.js`): totais do período, busca por nome, telefone ou produto, novo pedido, editar e excluir (dois toques).
+  - **Aba Vendas** (`vendas.js`): os números descritos abaixo.
 - **Pedido** = data, cliente (nome + telefone), itens (produto, quantidade, valor unitário), entrega/retirada + taxa, desconto, "o que pesquisou" e observação. **O total é sempre calculado no servidor**: itens + taxa − desconto (`api/_lib/pedidos.js`).
 - **Recorrência**: mesmo telefone (normalizado, sem o 55) em mais de um pedido. Sem telefone, usa o nome normalizado (aproximado). Ao digitar o telefone, o formulário avisa "cliente recorrente" e preenche o nome.
-- **API** `api/pedidos.js`: `GET` lista (`de`, `ate`, `busca`), `GET ?resumo=1` (seção Vendas), `GET ?telefone=` (histórico do cliente), `POST`, `PATCH ?id=`, `DELETE ?id=` (exclusão suave: `excluido_em`). A busca é filtrada em JS; nada digitado entra na URL do PostgREST. `id` só como uuid.
+- **API** `api/pedidos.js`: `GET` lista (`de`, `ate`, `busca`), `GET ?resumo=1` (aba Vendas); a lista também devolve `meses` (meses com pedidos, para o menu), `GET ?telefone=` (histórico do cliente), `POST`, `PATCH ?id=`, `DELETE ?id=` (exclusão suave: `excluido_em`). A busca é filtrada em JS; nada digitado entra na URL do PostgREST. `id` só como uuid.
 - **Tabela** `construbloc_pedidos` (migration `0004`), RLS sem policies, itens em `jsonb`. Desfazer uma exclusão: `update construbloc_pedidos set excluido_em = null where id = '<id>';`
-- **Seção Vendas** no /dashboard: segue o período do painel. Vendido, pedidos, ticket médio, **ROAS** (vendido ÷ investimento do Google Ads no período), custo por pedido, % da receita que vem de recompra, clientes recorrentes, vendas por dia, produtos mais vendidos e entrega × retirada. A recorrência olha o histórico inteiro, não só o período.
+- **Aba Vendas**: segue o período do menu. Vendido, pedidos, ticket médio, **ROAS** (vendido ÷ investimento do Google Ads no período), custo por pedido, % da receita que vem de recompra, clientes recorrentes, vendas por dia, produtos mais vendidos e entrega × retirada (gráfico por dia num mês, por mês em períodos maiores). Pedidos marcados "Outro" ficam fora. A recorrência olha o histórico inteiro, não só o período.
 - **Histórico da planilha** (out–nov/2026): importado pelo script `clientes/construbloc/relatorios/importar_pedidos_planilha.py` do repositório **privado** Google-Ads-Automate, que gera o SQL com `ON CONFLICT (ref_planilha) DO NOTHING`. Nos importados, `total` = valor cobrado na planilha (`total_planilha` guarda o mesmo); quando ficou abaixo de itens + taxa, a diferença virou `desconto`; itens com "x" na planilha ficam com quantidade/preço `null` ("sem preço" na tela). **Este repositório é público: nunca versionar aqui SQL ou planilha com nome/telefone de cliente.**
 
 ## Variáveis de ambiente (Vercel → Settings → Environment Variables)
