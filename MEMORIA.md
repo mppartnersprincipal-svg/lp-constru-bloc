@@ -15,7 +15,11 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - Fotos de produto: Wikimedia Commons (domínio público/CC0), formato 16:7, WebP 640/960.
 - Dashboard /dashboard: tabelas `construbloc_*` no Supabase compartilhado (Sólida/Gaspar). Volume de caminhão = 3 m³ ou mais (`TRUCK_M3`). Filtro de página = página de entrada. GA4 via conta de serviço da agência `dashboard-ga4@mp-dashboard-501816` (Leitor; propriedade 556611801). UTMs do Ads no sufixo do URL final de cada grupo.
 
+- Pedidos /pedidos (desde 18/11/2026): o Vinícius lança as vendas dos leads do Google no navegador em vez da planilha mensal; o Pedro vê na seção Vendas do /dashboard (ROAS com o investimento do Ads). Uma senha só (a do painel), decisão do Pedro. Pedido com vários itens, total calculado no servidor (itens + taxa − desconto), recorrência pelo telefone. Repo é **público**: dados de cliente (planilha, SQL de importação) ficam só no Google-Ads-Automate (privado).
+
 ## Pendências
+
+- Pedidos: rodar no SQL Editor do Supabase (khipnjfbxjgvmjvyxero não aparece no MCP) a migration `0004_construbloc_pedidos.sql` e depois `pedidos_import_2026-11-18.sql` (Google-Ads-Automate/clientes/construbloc/relatorios). A planilha usada só tinha novembro até 01/11; se o Vinícius tiver versão mais nova, reimportar (é idempotente pela linha da planilha) ou ele lança o resto em /pedidos.
 
 - Confirmar no GA4: `whatsapp_click` e `phone_click` como evento-chave + dimensões personalizadas (ver README).
 - Testar tags no GTM Preview no site publicado.
@@ -64,3 +68,6 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 ### 2026-11-09
 - fix: favicon no padrão do Google (`favicon.ico` 16/32/48 e PNG 48/96/192/512 na raiz, `site.webmanifest`, caminhos absolutos no head das páginas públicas, JSON-LD `logo` quadrado, content-type no `vercel.json`) — Google mostrava o globo genérico (ícone de 32px + caminho relativo quebrando em /areia/). `/dashboard` não foi alterado; só o `favicon-32.png` dele ganhou o desenho novo.
+
+### 2026-11-18
+- feat: cadastro de pedidos em /pedidos (`site/pedidos/`, `api/pedidos.js`, `api/_lib/pedidos.js`, migration 0004, testes) + seção Vendas no /dashboard (vendido, ticket, ROAS, recompra, produtos) — substitui a planilha mensal de pedidos do Vinícius. Campo de desconto incluído porque vários pedidos da planilha tiveram total abaixo da soma dos itens. Importação conferida contra a planilha e o parecer de 02/11 (números no Google-Ads-Automate, privado; este repo é público).

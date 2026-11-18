@@ -37,7 +37,7 @@ http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   if (url.pathname.startsWith('/api/')) return runFunction(req, res, url);
   let p = url.pathname === '/' ? '/index.html' : url.pathname;
-  if (p === '/dashboard' || p === '/dashboard/') p = '/dashboard/index.html';
+  if (/^\/(dashboard|pedidos)\/?$/.test(p)) p = `/${p.split('/')[1]}/index.html`;
   let file = path.join(SITE, decodeURIComponent(p));
   // espelha o cleanUrls:true da Vercel: /areia serve areia.html
   if (!path.extname(file) && existsSync(file + '.html')) file += '.html';

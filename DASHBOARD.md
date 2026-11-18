@@ -95,6 +95,18 @@ mensagem segura (sem repassar a resposta do Google) e não afetam as outras seç
 - Se o GA4 aplicar limite de privacidade (`subjectToThresholding`), a seção avisa que alguns números podem estar abaixo do real.
 - O GA4 diverge do coletor próprio por consentimento, bloqueadores, modelagem e processamento (até 48 h).
 
+## Pedidos (/pedidos) e seção Vendas
+
+Substitui a planilha "Controle de Pedidos - Leads Google" que o Vinícius preenchia e mandava todo mês.
+
+- **/pedidos** (`site/pedidos/`): tela para o celular. Mesmo login e mesmo token do /dashboard (`localStorage['cb-dash-token']`). Lista por mês, busca por nome, telefone ou produto, novo pedido, editar e excluir (dois toques).
+- **Pedido** = data, cliente (nome + telefone), itens (produto, quantidade, valor unitário), entrega/retirada + taxa, desconto, "o que pesquisou" e observação. **O total é sempre calculado no servidor**: itens + taxa − desconto (`api/_lib/pedidos.js`).
+- **Recorrência**: mesmo telefone (normalizado, sem o 55) em mais de um pedido. Sem telefone, usa o nome normalizado (aproximado). Ao digitar o telefone, o formulário avisa "cliente recorrente" e preenche o nome.
+- **API** `api/pedidos.js`: `GET` lista (`de`, `ate`, `busca`), `GET ?resumo=1` (seção Vendas), `GET ?telefone=` (histórico do cliente), `POST`, `PATCH ?id=`, `DELETE ?id=` (exclusão suave: `excluido_em`). A busca é filtrada em JS; nada digitado entra na URL do PostgREST. `id` só como uuid.
+- **Tabela** `construbloc_pedidos` (migration `0004`), RLS sem policies, itens em `jsonb`. Desfazer uma exclusão: `update construbloc_pedidos set excluido_em = null where id = '<id>';`
+- **Seção Vendas** no /dashboard: segue o período do painel. Vendido, pedidos, ticket médio, **ROAS** (vendido ÷ investimento do Google Ads no período), custo por pedido, % da receita que vem de recompra, clientes recorrentes, vendas por dia, produtos mais vendidos e entrega × retirada. A recorrência olha o histórico inteiro, não só o período.
+- **Histórico da planilha** (out–nov/2026): importado pelo script `clientes/construbloc/relatorios/importar_pedidos_planilha.py` do repositório **privado** Google-Ads-Automate, que gera o SQL com `ON CONFLICT (ref_planilha) DO NOTHING`. Nos importados, `total` = valor cobrado na planilha (`total_planilha` guarda o mesmo); quando ficou abaixo de itens + taxa, a diferença virou `desconto`; itens com "x" na planilha ficam com quantidade/preço `null` ("sem preço" na tela). **Este repositório é público: nunca versionar aqui SQL ou planilha com nome/telefone de cliente.**
+
 ## Variáveis de ambiente (Vercel → Settings → Environment Variables)
 
 Nenhuma chave vai no código nem no front. Nunca use prefixo público.
@@ -121,14 +133,14 @@ analytics). Sem senha/segredo, o login responde 503.
 
 ```
 cp .env.example .env.local   # e preencha
-npm run dev                  # http://localhost:4173 (site + /api + /dashboard)
-npm test                     # classify, validação do collect, agregações, Google Ads e GA4 (respostas simuladas)
+npm run dev                  # http://localhost:4173 (site + /api + /dashboard + /pedidos)
+npm test                     # classify, validação do collect, agregações, pedidos, Google Ads e GA4 (respostas simuladas)
 ```
 
 ## Deploy
 
 - O `vercel.json` continua publicando `site/` (`outputDirectory: "site"`, `cleanUrls`), então `/`, `/areia` e `/brita` não mudam. A pasta `api/` na raiz vira Vercel Functions automaticamente.
-- `/dashboard` e `/api/*` saem com `X-Robots-Tag: noindex` e `Cache-Control: no-store`; o `robots.txt` bloqueia os dois.
+- `/dashboard`, `/pedidos` e `/api/*` saem com `X-Robots-Tag: noindex` e `Cache-Control: no-store`; o `robots.txt` bloqueia os três.
 - `.vercelignore` tira do deploy `supabase/`, `tracking/`, `tests/`, `scripts/`, fotos e logos brutos, design system e documentos.
 
 ## QA depois do deploy
