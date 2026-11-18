@@ -29,6 +29,10 @@ async function rest(path, { method = 'GET', body, headers = {} } = {}) {
 
 export const rpc = (fn, args) => rest(`rpc/${fn}`, { method: 'POST', body: args });
 export const insert = (table, rows) => rest(table, { method: 'POST', body: rows, headers: { Prefer: 'return=minimal' } });
+/** INSERT que devolve as linhas gravadas. */
+export const insertReturning = (table, rows) => rest(table, { method: 'POST', body: rows, headers: { Prefer: 'return=representation' } });
+/** UPDATE (PATCH) com filtro PostgREST já validado por quem chama; devolve as linhas alteradas. */
+export const update = (table, filter, body) => rest(`${table}?${filter}`, { method: 'PATCH', body, headers: { Prefer: 'return=representation' } });
 
 /** SELECT paginado (o PostgREST do Supabase limita a 1000 linhas por requisição). */
 export async function selectAll(table, query, pageSize = 1000, max = 50000) {

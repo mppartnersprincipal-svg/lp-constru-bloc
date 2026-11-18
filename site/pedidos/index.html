@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#002080">
+  <title>Pedidos · Construbloc</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+  <style>
+    @font-face{font-family:"Russo One";font-weight:400;font-display:swap;src:url(/assets/fonts/russo-one-400.woff2) format("woff2")}
+    @font-face{font-family:"Barlow";font-weight:400;font-display:swap;src:url(/assets/fonts/barlow-400.woff2) format("woff2")}
+    @font-face{font-family:"Barlow";font-weight:600;font-display:swap;src:url(/assets/fonts/barlow-600.woff2) format("woff2")}
+    @font-face{font-family:"Barlow";font-weight:700;font-display:swap;src:url(/assets/fonts/barlow-700.woff2) format("woff2")}
+    @font-face{font-family:"Barlow Condensed";font-weight:600;font-display:swap;src:url(/assets/fonts/barlow-condensed-600.woff2) format("woff2")}
+    :root{
+      /* Design System Construbloc (mesmos tokens do /dashboard) */
+      --cb-blue-900:#000838;--cb-blue-600:#002080;--cb-blue-500:#1B3A9E;--cb-blue-100:#E4E8F5;--cb-blue-50:#F1F3FA;
+      --cb-gold-600:#C99E00;--cb-gold-500:#E0B000;--cb-gold-400:#F0D830;--cb-gold-100:#FBF3CC;
+      --cb-ink-900:#0E1220;--cb-ink-700:#2A3042;--cb-ink-500:#5B6275;--cb-line-200:#DCE0EA;--cb-surface-100:#F3F4F8;
+      --ok:#1E8E3E;--danger:#C62828;
+      --font-display:"Russo One","Arial Black",Impact,sans-serif;
+      --font-body:"Barlow","Helvetica Neue",Arial,sans-serif;
+      --font-label:"Barlow Condensed","Arial Narrow",sans-serif;
+      --radius:10px;--shadow:0 1px 2px rgba(0,8,56,.08);--focus:0 0 0 3px rgba(224,176,0,.55);
+      --gradient-gold:linear-gradient(90deg,#F8F050 0%,#E0B000 100%);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--cb-surface-100);color:var(--cb-ink-700);font:400 15px/1.5 var(--font-body);-webkit-font-smoothing:antialiased}
+    a{color:var(--cb-blue-600)}
+    button,input,select,textarea{font-family:inherit}
+    :focus-visible{outline:none;box-shadow:var(--focus)}
+    .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+    h1,h2,h3{font-family:var(--font-display);font-weight:400;color:var(--cb-blue-600);margin:0}
+    .muted{color:var(--cb-ink-500)}
+    .hidden{display:none!important}
+
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 18px;border-radius:6px;border:1px solid var(--cb-line-200);background:#fff;color:var(--cb-blue-600);font:600 14px var(--font-body);text-decoration:none;cursor:pointer;transition:background .15s,border-color .15s}
+    .btn:hover{border-color:var(--cb-blue-600)}
+    .btn:disabled{opacity:.6;cursor:wait}
+    .btn--gold{background:var(--cb-gold-500);border-color:var(--cb-gold-500);color:var(--cb-blue-900)}
+    .btn--gold:hover{background:var(--cb-gold-400);border-color:var(--cb-gold-400)}
+    .btn--sm{min-height:36px;padding:6px 12px;font-size:13px}
+    .btn--ghost{background:transparent;border-color:rgba(255,255,255,.35);color:#fff}
+    .btn--ghost:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+    .btn--danger{color:var(--danger)}
+    .btn--danger.armed{background:var(--danger);border-color:var(--danger);color:#fff}
+
+    /* Login */
+    #login{min-height:100svh;display:grid;place-items:center;padding:16px;background:linear-gradient(90deg,#000838 0%,#002080 100%)}
+    .login-card{width:100%;max-width:400px;padding:36px 28px;border-radius:12px;text-align:center;background:#fff;box-shadow:0 16px 40px rgba(0,8,56,.35);border-top:6px solid var(--cb-gold-500)}
+    .login-card img{height:64px;width:auto;margin-bottom:14px}
+    .login-card p{margin:6px 0 22px;font-size:14px}
+    .field{width:100%;min-height:46px;padding:10px 12px;border-radius:6px;border:1px solid var(--cb-line-200);background:#fff;color:var(--cb-ink-900);font:400 16px var(--font-body);outline:none}
+    .field:focus{border-color:var(--cb-blue-600);box-shadow:var(--focus)}
+    textarea.field{min-height:72px;resize:vertical}
+    .error{color:var(--danger);font-size:14px;min-height:20px;margin:10px 0 0}
+    #list-error:empty{display:none}
+
+    /* Topo */
+    .top{position:sticky;top:0;z-index:20;background:var(--cb-blue-900);color:#fff}
+    .top::after{content:"";display:block;height:4px;background:var(--gradient-gold)}
+    .top .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .brand img{height:34px;width:auto}
+    .brand span{font-family:var(--font-display);font-size:18px;color:#fff}
+    .top-actions{display:flex;gap:8px}
+
+    /* Mês + KPIs */
+    .month{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 0 10px}
+    .month h1{font-size:22px;text-align:center;flex:1}
+    .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
+    @media(min-width:700px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    .kpi{background:#fff;border:1px solid var(--cb-line-200);border-left:4px solid var(--cb-blue-600);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow);min-width:0}
+    .kpi.gold{border-left-color:var(--cb-gold-500)}
+    .kpi .lbl{font:600 12px var(--font-label);letter-spacing:.08em;text-transform:uppercase;color:var(--cb-ink-500)}
+    .kpi .val{font-family:var(--font-display);font-size:clamp(16px,4.6vw,22px);color:var(--cb-blue-900);margin-top:4px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+    .tools{display:flex;gap:8px;margin-bottom:14px}
+    .tools .field{flex:1;min-width:0}
+
+    /* Lista */
+    .list{display:flex;flex-direction:column;gap:10px;padding-bottom:96px}
+    .order{background:#fff;border:1px solid var(--cb-line-200);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+    .order .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .order .who{min-width:0}
+    .order .who b{display:block;color:var(--cb-ink-900);font-size:16px;overflow-wrap:anywhere}
+    .order .who small{color:var(--cb-ink-500);font-size:13px}
+    .order .total{font-family:var(--font-display);font-size:19px;color:var(--cb-blue-900);white-space:nowrap}
+    .order ul{list-style:none;margin:10px 0;padding:0;font-size:14px;color:var(--cb-ink-700)}
+    .order li{display:flex;justify-content:space-between;gap:10px;padding:3px 0;border-bottom:1px dashed var(--cb-line-200)}
+    .order li span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
+    .order .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .order .actions{display:flex;gap:8px;margin-top:10px;justify-content:flex-end}
+    .order .note{font-size:13px;color:var(--cb-ink-500);margin-top:6px}
+    .tag{display:inline-block;padding:2px 8px;border-radius:999px;font:600 12px var(--font-body);border:1px solid var(--cb-line-200);color:var(--cb-ink-700);white-space:nowrap}
+    .tag.gold{background:var(--cb-gold-100);border-color:var(--cb-gold-500);color:var(--cb-blue-900)}
+    .tag.blue{background:var(--cb-blue-50);border-color:var(--cb-blue-100);color:var(--cb-blue-600)}
+    .empty{padding:28px;text-align:center;color:var(--cb-ink-500);background:#fff;border:1px dashed var(--cb-line-200);border-radius:var(--radius)}
+    .fab{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:15;box-shadow:0 8px 22px rgba(0,8,56,.3);min-width:220px}
+
+    /* Formulário (tela cheia no celular) */
+    .sheet{position:fixed;inset:0;z-index:40;background:rgba(0,8,56,.55);display:flex;justify-content:center;align-items:flex-start;overflow-y:auto;padding:0}
+    .sheet form{background:#fff;width:100%;max-width:640px;min-height:100svh;padding:0 16px 24px}
+    /* margem (não padding) no desktop: o cabeçalho fixo gruda no topo da rolagem sem deixar conteúdo passar por cima */
+    @media(min-width:700px){.sheet{padding:0 16px}.sheet form{min-height:0;border-radius:12px;margin:32px 0}}
+    .sheet .sheet-top{position:sticky;top:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--cb-line-200);margin-bottom:14px;z-index:2}
+    .sheet h2{font-size:20px}
+    .row{display:grid;gap:10px;margin-bottom:12px}
+    .row.two{grid-template-columns:1fr 1fr}
+    label.lbl{display:block;font:600 13px var(--font-label);letter-spacing:.06em;text-transform:uppercase;color:var(--cb-ink-500);margin-bottom:4px}
+    .hint{font-size:13px;margin-top:6px;min-height:18px}
+    .hint.ok{color:var(--ok);font-weight:600}
+    fieldset{border:1px solid var(--cb-line-200);border-radius:var(--radius);padding:12px;margin:0 0 12px}
+    legend{font:600 13px var(--font-label);letter-spacing:.06em;text-transform:uppercase;color:var(--cb-ink-500);padding:0 6px}
+    .item{display:grid;grid-template-columns:minmax(0,1fr) 40px;gap:8px;padding:10px 0;border-bottom:1px dashed var(--cb-line-200)}
+    .item .nums{grid-column:1/2;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .item .sub{grid-column:1/2;font-size:13px;color:var(--cb-ink-500);text-align:right}
+    .item .rm{grid-row:1/3;grid-column:2;align-self:start;min-height:44px;border:0;background:none;color:var(--danger);font-size:22px;cursor:pointer;border-radius:6px}
+    .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+    .seg label{display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid var(--cb-line-200);border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;text-align:center;padding:4px}
+    .seg input{position:absolute;opacity:0;pointer-events:none}
+    .seg input:checked+span{color:#fff}
+    .seg label:has(input:checked){background:var(--cb-blue-600);border-color:var(--cb-blue-600);color:#fff}
+    .seg label:has(input:focus-visible){box-shadow:var(--focus)}
+    .sum{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;border-radius:var(--radius);background:var(--cb-blue-50);margin:14px 0}
+    .sum b{font-family:var(--font-display);font-size:24px;color:var(--cb-blue-900);font-weight:400}
+    .form-actions{display:flex;gap:10px}
+    .form-actions .btn{flex:1}
+    .toast{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:50;background:var(--cb-blue-900);color:#fff;padding:10px 18px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 8px 22px rgba(0,8,56,.3)}
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN (mesma senha e mesmo token do /dashboard) -->
+  <div id="login">
+    <form class="login-card" id="login-form" autocomplete="off">
+      <img src="/assets/img/logo-color.webp" alt="Construbloc">
+      <h1 style="font-size:22px">Pedidos</h1>
+      <p class="muted">Cadastro das vendas dos clientes que vieram do Google</p>
+      <input class="field" type="password" id="pwd" placeholder="Senha de acesso" aria-label="Senha de acesso" required autofocus>
+      <p class="error" id="login-error" role="alert"></p>
+      <button class="btn btn--gold" type="submit" style="width:100%">Entrar</button>
+    </form>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="hidden">
+    <header class="top">
+      <div class="wrap bar">
+        <div class="brand"><img src="/assets/img/logo-white.webp" alt="Construbloc"><span>Pedidos</span></div>
+        <div class="top-actions">
+          <a class="btn btn--sm btn--ghost" href="/dashboard#vendas">Painel</a>
+          <button class="btn btn--sm btn--ghost" type="button" id="logout">Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="month">
+        <button class="btn btn--sm" type="button" id="prev" aria-label="Mês anterior">‹</button>
+        <h1 id="month-title" aria-live="polite"></h1>
+        <button class="btn btn--sm" type="button" id="next" aria-label="Próximo mês">›</button>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="tools">
+        <input class="field" type="search" id="busca" placeholder="Buscar nome, telefone ou produto" aria-label="Buscar pedidos">
+      </div>
+      <p class="error" id="list-error" role="alert"></p>
+      <div class="list" id="list"></div>
+    </main>
+
+    <button class="btn btn--gold fab" type="button" id="novo">+ Novo pedido</button>
+  </div>
+
+  <!-- FORMULÁRIO -->
+  <div class="sheet hidden" id="sheet" role="dialog" aria-modal="true" aria-labelledby="form-title">
+    <form id="form" novalidate>
+      <div class="sheet-top">
+        <h2 id="form-title">Novo pedido</h2>
+        <button class="btn btn--sm" type="button" id="fechar">Cancelar</button>
+      </div>
+      <p class="hint muted hidden" id="import-note" style="margin:0 0 12px;padding:10px 12px;border-radius:6px;background:var(--cb-gold-100)"></p>
+
+      <div class="row two">
+        <div><label class="lbl" for="f-data">Data</label><input class="field" type="date" id="f-data" required></div>
+        <div><label class="lbl" for="f-origem">Veio de onde</label>
+          <select class="field" id="f-origem"><option value="google">Google</option><option value="outro">Outro</option></select></div>
+      </div>
+      <div class="row">
+        <div><label class="lbl" for="f-tel">Telefone (WhatsApp)</label>
+          <input class="field" type="tel" id="f-tel" inputmode="tel" autocomplete="off" placeholder="(62) 99999-9999">
+          <div class="hint muted" id="tel-hint" aria-live="polite"></div></div>
+        <div><label class="lbl" for="f-nome">Nome do cliente</label><input class="field" type="text" id="f-nome" maxlength="120" autocomplete="off"></div>
+      </div>
+
+      <fieldset>
+        <legend>Produtos</legend>
+        <div id="itens"></div>
+        <button class="btn btn--sm" type="button" id="add-item" style="margin-top:10px">+ Adicionar produto</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Entrega</legend>
+        <div class="seg" role="radiogroup" aria-label="Entrega">
+          <label><input type="radio" name="entrega" value="entrega"><span>Entrega</span></label>
+          <label><input type="radio" name="entrega" value="retirada"><span>Retirada</span></label>
+          <label><input type="radio" name="entrega" value="indefinido"><span>Não sei</span></label>
+        </div>
+        <div id="taxa-box" style="margin-top:10px"><label class="lbl" for="f-taxa">Taxa de entrega (R$)</label>
+          <input class="field" type="text" id="f-taxa" inputmode="decimal" placeholder="0,00"></div>
+      </fieldset>
+
+      <div class="row">
+        <div><label class="lbl" for="f-desconto">Desconto (R$)</label>
+          <input class="field" type="text" id="f-desconto" inputmode="decimal" placeholder="0,00"></div>
+        <div><label class="lbl" for="f-pesquisou">O que ele pesquisou no Google (se souber)</label>
+          <input class="field" type="text" id="f-pesquisou" maxlength="200" placeholder="ex.: areia média perto de mim"></div>
+        <div><label class="lbl" for="f-obs">Observação</label><textarea class="field" id="f-obs" maxlength="1000"></textarea></div>
+      </div>
+
+      <div class="sum"><span>Total do pedido</span><b id="f-total">R$ 0,00</b></div>
+      <p class="error" id="form-error" role="alert"></p>
+      <div class="form-actions">
+        <button class="btn" type="button" id="cancelar">Cancelar</button>
+        <button class="btn btn--gold" type="submit" id="salvar">Salvar pedido</button>
+      </div>
+    </form>
+  </div>
+
+  <datalist id="produtos-list"></datalist>
+  <div class="toast hidden" id="toast" role="status"></div>
+
+  <script src="/pedidos/app.js" defer></script>
+</body>
+</html>

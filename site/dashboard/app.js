@@ -92,9 +92,14 @@
     api('/api/dashboard', qs).then(function (d) { if (seq === loadSeq) render(d); })
       .catch(function (e) { if (e.message !== '401' && seq === loadSeq) $('#updated').textContent = 'Erro: ' + e.message; });
     $('#ads-body').innerHTML = '<div class="card"><div class="empty">Consultando o Google Ads…</div></div>';
+    $('#vendas-body').innerHTML = '<div class="card"><div class="empty">Carregando as vendas…</div></div>';
+    vendasState = { resumo: null, ads: undefined };
+    api('/api/pedidos', new URLSearchParams({ resumo: '1', de: state.de, ate: state.ate }).toString())
+      .then(function (v) { if (seq === loadSeq) { vendasState.resumo = v; vendas(); } })
+      .catch(function (e) { if (e.message !== '401' && seq === loadSeq) $('#vendas-body').innerHTML = '<div class="state err"><b>Não foi possível carregar as vendas</b>' + esc(e.message) + '</div>'; });
     api('/api/google-ads', new URLSearchParams({ de: state.de, ate: state.ate }).toString())
-      .then(function (a) { if (seq === loadSeq) googleAds(a); })
-      .catch(function (e) { if (e.message !== '401' && seq === loadSeq) googleAds({ status: 'error', message: 'A consulta ao Google Ads não foi concluída. Tente atualizar o painel em alguns minutos.' }); });
+      .then(function (a) { if (seq === loadSeq) { googleAds(a); vendasState.ads = a; vendas(); } })
+      .catch(function (e) { if (e.message !== '401' && seq === loadSeq) { googleAds({ status: 'error', message: 'A consulta ao Google Ads não foi concluída. Tente atualizar o painel em alguns minutos.' }); vendasState.ads = null; vendas(); } });
     $('#ga4-body').innerHTML = '<div class="card"><div class="empty">Consultando o GA4…</div></div>';
     api('/api/ga4', new URLSearchParams({ de: state.de, ate: state.ate }).toString())
       .then(function (g) { if (seq === loadSeq) ga4(g); })
@@ -247,6 +252,50 @@
       }).join('') + '</tbody></table></div>';
     el.innerHTML = cards + '<div class="card"><header><div><h3>Resultados por campanha</h3><p>Inclui campanhas pausadas ou removidas com resultados no período</p></div></header>' + table +
       '<p class="note">O período selecionado vale para os anúncios; os filtros de origem e de página valem só para as visitas do site. As conversões seguem a atribuição do Google Ads, podem ser fracionárias e ser atualizadas depois. Não são o mesmo número que os cliques no WhatsApp medidos pelo site. "—" indica uma taxa que não pode ser calculada no período.</p></div>';
+  }
+
+  // ---------- Vendas (pedidos lançados em /pedidos; ROAS com o investimento do Google Ads) ----------
+  var vendasState = { resumo: null, ads: undefined };
+  var ENTREGA = { entrega: 'Entrega', retirada: 'Retirada', indefinido: 'Não informado' };
+  function vendas() {
+    var v = vendasState.resumo, el = $('#vendas-body');
+    if (!v) return;
+    if (charts['c-vendas']) { charts['c-vendas'].destroy(); delete charts['c-vendas']; }
+    var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+    var m = function (n) { return brl.format(Number(n) || 0); };
+    var k = v.kpis, a = vendasState.ads;
+    $('#vendas-lead').innerHTML = 'Pedidos lançados em <a href="/pedidos">/pedidos</a> · ' + brDate(v.range.de) + ' a ' + brDate(v.range.ate);
+    if (!k.pedidos) { el.innerHTML = '<div class="state"><b>Nenhum pedido lançado no período</b>Os pedidos aparecem aqui assim que forem cadastrados em <a href="/pedidos">/pedidos</a>.</div>'; return; }
+    var cost = a && a.status === 'ready' ? a.totals.cost : null;
+    var roas = a === undefined ? '…' : cost ? dec(k.faturamento / cost, 1) + 'x' : '—';
+    var roasHint = a === undefined ? 'Consultando o Google Ads…' : cost ? 'Vendas ÷ ' + m(cost) + ' investidos no Google Ads' : 'Sem investimento do Google Ads no período';
+    el.innerHTML = '<div class="kpis">' + [
+      kpi('Vendido', m(k.faturamento), null, null, null, 'gold wide', (k.taxas_entrega ? 'Inclui ' + m(k.taxas_entrega) + ' de taxas de entrega' : 'Soma dos pedidos') +
+        (k.fora_google_pedidos ? ' · fora: ' + k.fora_google_pedidos + ' pedido' + (k.fora_google_pedidos > 1 ? 's' : '') + ' que não veio do Google (' + m(k.fora_google_valor) + ')' : '')),
+      kpi('Pedidos', k.pedidos, null, null, null, null, fmt(k.clientes) + ' clientes' + (k.sem_identificacao ? ' (' + k.sem_identificacao + ' sem nome/telefone)' : '')),
+      kpi('Ticket médio', m(k.ticket_medio), null, null, null, null, 'Vendido ÷ pedidos'),
+      kpi('ROAS', roas, null, null, null, 'gold', roasHint),
+      kpi('Custo por pedido', a === undefined ? '…' : cost ? m(cost / k.pedidos) : '—', null, null, null, null, 'Investimento ÷ pedidos fechados'),
+      kpi('Recompra', dec(k.pct_receita_recompra, 1) + '%', null, null, null, 'gold', k.recompras + ' pedidos de quem já tinha comprado (' + m(k.receita_recompra) + ')'),
+      kpi('Clientes recorrentes', k.clientes_recorrentes, null, null, null, null, 'Compraram 2 vezes ou mais'),
+    ].join('') + '</div>' +
+      '<div class="grid g-2"><div class="card"><header><div><h3>Vendas por dia</h3><p>Valor vendido e número de pedidos</p></div></header><div class="chart"><canvas id="c-vendas" role="img" aria-label="Vendas por dia"></canvas></div></div>' +
+      '<div class="card"><header><div><h3>Produtos mais vendidos</h3><p>Por valor no período</p></div></header><div class="bars" id="vendas-produtos"></div></div></div>' +
+      '<div class="grid g-11"><div class="card"><header><div><h3>Clientes recorrentes</h3><p>2 compras ou mais no histórico, com compra no período</p></div></header><div class="tbl-wrap" id="vendas-rec"></div></div>' +
+      '<div class="card"><header><div><h3>Entrega × retirada</h3><p>Pedidos no período</p></div></header><div class="bars gold" id="vendas-entrega"></div></div></div>' +
+      '<p class="note">Vendas lançadas à mão pelo cliente em /pedidos (o histórico de out–nov/2026 veio da planilha). Recorrência pelo telefone; sem telefone, pelo nome (aproximado). Pedidos marcados "Outro" (não vieram do Google) ficam fora dos números e do ROAS, que usa o investimento do Google Ads no mesmo período.</p>';
+    var max = Math.max.apply(null, v.produtos.map(function (p) { return p.valor; }).concat([1]));
+    $('#vendas-produtos').innerHTML = v.produtos.length ? v.produtos.slice(0, 10).map(function (p) {
+      return '<div class="bar"><span class="name" title="' + esc(p.produto) + '">' + esc(p.produto) + ' <span class="muted">· ' + dec(p.quantidade) + ' un. em ' + p.pedidos + ' pedido' + (p.pedidos > 1 ? 's' : '') + '</span></span><span class="num">' + m(p.valor) + '</span><div class="track"><div class="fill" style="width:' + Math.max(3, p.valor / max * 100) + '%"></div></div></div>';
+    }).join('') : '<div class="empty">Sem dados no período</div>';
+    bars('#vendas-entrega', v.entrega.map(function (x) { return { key: x.key, label: ENTREGA[x.key] || x.key, value: x.value }; }));
+    $('#vendas-rec').innerHTML = v.recorrentes.length ? '<table><thead><tr><th>Cliente</th><th class="n">Compras</th><th class="n">Total</th><th>Primeira</th><th>Última</th></tr></thead><tbody>' + v.recorrentes.map(function (c) {
+      return '<tr><td>' + esc(c.nome || 'Sem nome') + (c.telefone ? '<br><span class="muted">' + esc(c.telefone) + '</span>' : '') + '</td><td class="n">' + c.compras + '</td><td class="n">' + m(c.total) + '</td><td>' + brDate(c.primeira) + '</td><td>' + brDate(c.ultima) + '</td></tr>';
+    }).join('') + '</tbody></table>' : '<div class="empty">Nenhum cliente recorrente no período</div>';
+    chart('c-vendas', { type: 'bar', data: { labels: v.por_dia.map(function (x) { return brDate(x.data, true); }), datasets: [
+      { type: 'line', label: 'Pedidos', data: v.por_dia.map(function (x) { return x.pedidos; }), borderColor: '#E0B000', backgroundColor: '#E0B000', tension: .35, pointRadius: 2, yAxisID: 'y1' },
+      { label: 'Vendido (R$)', data: v.por_dia.map(function (x) { return x.total; }), backgroundColor: 'rgba(0,32,128,.85)', borderRadius: 3 },
+    ] }, options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { y: { beginAtZero: true }, y1: { position: 'right', beginAtZero: true, grid: { drawOnChartArea: false }, ticks: { precision: 0 } } }, plugins: { legend: { position: 'bottom' } } } });
   }
 
   // ---------- GA4 (Data API, só leitura) ----------

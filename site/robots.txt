@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /dashboard
+Disallow: /pedidos
 Disallow: /api/
 
 Sitemap: https://www.construbloc.site/sitemap.xml
