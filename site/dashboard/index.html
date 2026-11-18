@@ -87,8 +87,6 @@
     .kpi .lbl{font:600 12px var(--font-label);letter-spacing:.08em;text-transform:uppercase;color:var(--cb-ink-500)}
     .kpi .val{font-family:var(--font-display);font-size:28px;line-height:1.15;color:var(--cb-blue-900);margin:6px 0 2px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
     @media(max-width:600px){.kpi .val{font-size:clamp(16px,4.6vw,28px)}}
-    .kpi.wide{grid-column:1/-1}
-    @media(min-width:900px){.kpi.wide{grid-column:auto}}
     .kpi .hint{font-size:12px;color:var(--cb-ink-500)}
     .kpi .delta{font-size:12px;font-weight:600}
     .delta.up{color:var(--ok)}.delta.down{color:var(--danger)}
@@ -201,7 +199,7 @@
       </div>
       <div class="wrap">
         <nav class="secnav" aria-label="Seções do painel">
-          <a href="#visao">Visão geral</a><a href="#vendas">Vendas</a><a href="#contatos">Contatos</a><a href="#calculadora">Calculadora</a><a href="#google-ads">Google Ads</a><a href="#ga4">GA4</a><a href="#campanhas">Campanhas</a><a href="#leitura">Leitura</a><a href="#faq">FAQ</a><a href="#jornadas">Jornadas</a><a href="#quando">Quando</a><a href="#onde">Onde</a><a href="#cliques">Cliques</a><a href="#publico">Público</a><a href="#aovivo">Ao vivo</a>
+          <a href="#visao">Visão geral</a><a href="#contatos">Contatos</a><a href="#calculadora">Calculadora</a><a href="#google-ads">Google Ads</a><a href="#ga4">GA4</a><a href="#campanhas">Campanhas</a><a href="#leitura">Leitura</a><a href="#faq">FAQ</a><a href="#jornadas">Jornadas</a><a href="#quando">Quando</a><a href="#onde">Onde</a><a href="#cliques">Cliques</a><a href="#publico">Público</a><a href="#aovivo">Ao vivo</a>
         </nav>
       </div>
     </div>
@@ -247,12 +245,6 @@
           <div class="card"><header><h3>Dispositivo</h3></header><div class="chart"><canvas id="c-devices" role="img" aria-label="Dispositivos"></canvas></div></div>
           <div class="card"><header><h3>Novo × recorrente</h3></header><div class="chart"><canvas id="c-audience" role="img" aria-label="Novos e recorrentes"></canvas></div></div>
         </div>
-      </section>
-
-      <section class="block" id="vendas">
-        <h2>Vendas dos leads do Google</h2>
-        <p class="lead" id="vendas-lead">Pedidos lançados em <a href="/pedidos">/pedidos</a></p>
-        <div id="vendas-body"><div class="card"><div class="empty">Carregando…</div></div></div>
       </section>
 
       <section class="block" id="contatos">

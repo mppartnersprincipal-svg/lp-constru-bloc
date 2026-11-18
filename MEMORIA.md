@@ -15,11 +15,11 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 - Fotos de produto: Wikimedia Commons (domínio público/CC0), formato 16:7, WebP 640/960.
 - Dashboard /dashboard: tabelas `construbloc_*` no Supabase compartilhado (Sólida/Gaspar). Volume de caminhão = 3 m³ ou mais (`TRUCK_M3`). Filtro de página = página de entrada. GA4 via conta de serviço da agência `dashboard-ga4@mp-dashboard-501816` (Leitor; propriedade 556611801). UTMs do Ads no sufixo do URL final de cada grupo.
 
-- Pedidos /pedidos (desde 18/11/2026): o Vinícius lança as vendas dos leads do Google no navegador em vez da planilha mensal; o Pedro vê na seção Vendas do /dashboard (ROAS com o investimento do Ads). Uma senha só (a do painel), decisão do Pedro. Pedido com vários itens, total calculado no servidor (itens + taxa − desconto), recorrência pelo telefone. Repo é **público**: dados de cliente (planilha, SQL de importação) ficam só no Google-Ads-Automate (privado).
+- Pedidos /pedidos (desde 18/11/2026): o Vinícius lança as vendas dos leads do Google no navegador em vez da planilha mensal; o Pedro vê na aba **Vendas** do próprio /pedidos (ROAS com o investimento do Ads). Os dados de venda NÃO ficam no /dashboard principal (decisão do Pedro, 18/11). Menu suspenso de período em vez de setas de mês. Uma senha só (a do painel), decisão do Pedro. Pedido com vários itens, total calculado no servidor (itens + taxa − desconto), recorrência pelo telefone. Repo é **público**: dados de cliente (planilha, SQL de importação) ficam só no Google-Ads-Automate (privado).
 
 ## Pendências
 
-- Pedidos: migration 0004 e importação rodadas pelo Pedro em 18/11 e merge na main (no ar). Falta conferir logado em /pedidos e na seção Vendas (o `.env.local` desta máquina não tem a service key real, então o teste com banco não roda local). A planilha usada só tinha novembro até 01/11; se o Vinícius tiver versão mais nova, reimportar (idempotente pela linha da planilha) ou ele lança o resto em /pedidos.
+- Pedidos: migration 0004 e importação rodadas pelo Pedro em 18/11 e merge na main (no ar). Falta conferir logado em /pedidos (abas Pedidos e Vendas) (o `.env.local` desta máquina não tem a service key real, então o teste com banco não roda local). Planilha corrigida do Vinícius reimportada com `--substituir` (SQL rodado pelo Pedro). Pedir ao Vinícius o telefone em todo pedido (novembro veio sem nenhum; recorrência ficou só pelo nome).
 
 - Confirmar no GA4: `whatsapp_click` e `phone_click` como evento-chave + dimensões personalizadas (ver README).
 - Testar tags no GTM Preview no site publicado.
@@ -71,3 +71,4 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 ### 2026-11-18
 - feat: cadastro de pedidos em /pedidos (`site/pedidos/`, `api/pedidos.js`, `api/_lib/pedidos.js`, migration 0004, testes) + seção Vendas no /dashboard (vendido, ticket, ROAS, recompra, produtos) — substitui a planilha mensal de pedidos do Vinícius. Campo de desconto incluído porque vários pedidos da planilha tiveram total abaixo da soma dos itens. Importação conferida contra a planilha e o parecer de 02/11 (números no Google-Ads-Automate, privado; este repo é público).
+- refactor: seção Vendas saiu do /dashboard (Pedro quer o painel principal só com tracking) e virou a aba **Vendas** dentro do /pedidos (`site/pedidos/vendas.js`); as setas de mês viraram menu suspenso de período (meses com pedidos, últimos 30 dias, desde o início). API devolve `meses` na lista.

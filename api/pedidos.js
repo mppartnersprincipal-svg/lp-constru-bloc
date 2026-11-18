@@ -8,7 +8,7 @@ import * as realDb from './_lib/db.js';
 import { verifyToken, bearer } from './_lib/auth.js';
 import { range } from './_lib/period.js';
 import {
-  anotarRecorrencia, filtrarPedidos, historicoCliente, isUuid, mesmosValores, produtosUsados, resumoVendas,
+  anotarRecorrencia, filtrarPedidos, historicoCliente, isUuid, mesesComPedidos, mesmosValores, produtosUsados, resumoVendas,
   validarCabecalho, validarPedido,
 } from './_lib/pedidos.js';
 
@@ -32,7 +32,7 @@ export function criarHandler({ db = realDb, autenticado = (req) => verifyToken(b
     const busca = typeof q.busca === 'string' ? q.busca.slice(0, MAX_BUSCA) : '';
     const pedidos = filtrarPedidos(todos, { de: r.de, ate: r.ate, busca })
       .map((p) => ({ ...p, compra_n: rec.get(p.id).ordem, compras_cliente: rec.get(p.id).compras }));
-    return { range: { de: r.de, ate: r.ate }, pedidos, produtos: produtosUsados(todos) };
+    return { range: { de: r.de, ate: r.ate }, pedidos, produtos: produtosUsados(todos), meses: mesesComPedidos(todos) };
   }
 
   async function get(q) {

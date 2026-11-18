@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
-  anotarRecorrencia, calcularTotal, filtrarPedidos, historicoCliente, mesmosValores, normalizarTelefone, numero, produtosUsados, resumoVendas, texto,
+  anotarRecorrencia, calcularTotal, filtrarPedidos, historicoCliente, mesesComPedidos, mesmosValores, normalizarTelefone, numero, produtosUsados, resumoVendas, texto,
   validarPedido,
 } from '../api/_lib/pedidos.js';
 
@@ -204,6 +204,11 @@ test('no resumo, o nome do produto prefere a variação que não está em maiús
     P('n', '2026-11-01', null, null, 10, [{ produto: 'Cimento 50kg', quantidade: 1, valor_unitario: 10 }]),
   ], { de: '2026-11-01', ate: '2026-11-30' });
   assert.deepEqual([s.produtos[0].produto, s.produtos[0].pedidos], ['Cimento 50kg', 2]);
+});
+
+test('meses com pedidos, do mais recente para o mais antigo, com contagem e total', () => {
+  assert.deepEqual(mesesComPedidos(HIST), [{ mes: '2026-11', pedidos: 5, total: 900 }, { mes: '2026-10', pedidos: 1, total: 300 }]);
+  assert.deepEqual(mesesComPedidos([]), []);
 });
 
 test('produtos usados vêm do mais frequente, sem repetir variações de caixa', () => {

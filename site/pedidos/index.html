@@ -66,11 +66,21 @@
     .brand span{font-family:var(--font-display);font-size:18px;color:#fff}
     .top-actions{display:flex;gap:8px}
 
-    /* Mês + KPIs */
-    .month{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 0 10px}
-    .month h1{font-size:22px;text-align:center;flex:1}
+    /* Abas (no topo azul) */
+    .tabs{display:flex;gap:4px}
+    .tab{flex:0 0 auto;min-height:44px;padding:10px 18px;border:0;border-bottom:3px solid transparent;background:none;color:rgba(255,255,255,.72);font:600 14px var(--font-label);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+    .tab:hover{color:#fff}
+    .tab.is-active{color:#fff;border-bottom-color:var(--cb-gold-500)}
+
+    /* Período (menu suspenso) + KPIs */
+    .periodo{display:flex;align-items:center;gap:10px;padding:16px 0 12px}
+    .periodo label{font:600 13px var(--font-label);letter-spacing:.06em;text-transform:uppercase;color:var(--cb-ink-500);white-space:nowrap}
+    .periodo select{flex:1;min-width:0;max-width:360px;min-height:46px;padding:10px 40px 10px 12px;border-radius:6px;border:1px solid var(--cb-line-200);color:var(--cb-blue-900);font:600 16px var(--font-body);
+      appearance:none;-webkit-appearance:none;cursor:pointer;
+      background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23002080' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center}
+    .periodo select:focus{outline:none;border-color:var(--cb-blue-600);box-shadow:var(--focus)}
     .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
-    @media(min-width:700px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    @media(min-width:900px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
     .kpi{background:#fff;border:1px solid var(--cb-line-200);border-left:4px solid var(--cb-blue-600);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow);min-width:0}
     .kpi.gold{border-left-color:var(--cb-gold-500)}
     .kpi .lbl{font:600 12px var(--font-label);letter-spacing:.08em;text-transform:uppercase;color:var(--cb-ink-500)}
@@ -126,6 +136,33 @@
     .sum b{font-family:var(--font-display);font-size:24px;color:var(--cb-blue-900);font-weight:400}
     .form-actions{display:flex;gap:10px}
     .form-actions .btn{flex:1}
+    /* Aba Vendas */
+    .vlead{margin:0 0 12px;font-size:14px;color:var(--cb-ink-500)}
+    .kpis--vendas .kpi.wide{grid-column:1/-1}
+    @media(min-width:900px){.kpis--vendas .kpi.wide{grid-column:auto}}
+    .kpi .khint{font-size:12px;color:var(--cb-ink-500);margin-top:2px}
+    .card{background:#fff;border:1px solid var(--cb-line-200);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);min-width:0;margin-bottom:12px}
+    .card h3{font-size:16px;margin-bottom:12px}
+    .card .sub{margin:-8px 0 12px;font-size:13px;color:var(--cb-ink-500)}
+    .cards2{display:grid;gap:12px;margin-bottom:12px}
+    .cards2 .card{margin:0}
+    @media(min-width:700px){.cards2{grid-template-columns:1fr 1fr}}
+    .chart{position:relative;height:240px}
+    .bars{display:flex;flex-direction:column;gap:10px}
+    .bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;font-size:14px}
+    .bar .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--cb-ink-900)}
+    .bar .num{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .bar .track{grid-column:1/-1;height:8px;border-radius:999px;background:var(--cb-blue-50);overflow:hidden}
+    .bar .fill{height:100%;background:var(--cb-blue-600);border-radius:999px}
+    .bars.gold .fill{background:var(--cb-gold-500)}
+    .tbl-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th{font:600 12px var(--font-label);letter-spacing:.06em;text-transform:uppercase;color:var(--cb-ink-500);text-align:left;padding:8px;border-bottom:2px solid var(--cb-line-200);white-space:nowrap}
+    td{padding:8px;border-bottom:1px solid var(--cb-line-200);color:var(--cb-ink-900);vertical-align:top}
+    td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+    .state{padding:16px;border-radius:8px;background:#FDECEC;border:1px dashed var(--danger);font-size:14px}
+    .state b{display:block;color:var(--danger);margin-bottom:4px}
+    .nota{margin:4px 0 32px;font-size:12px;line-height:1.6;color:var(--cb-ink-500)}
     .toast{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:50;background:var(--cb-blue-900);color:#fff;padding:10px 18px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 8px 22px rgba(0,8,56,.3)}
   </style>
 </head>
@@ -149,24 +186,34 @@
       <div class="wrap bar">
         <div class="brand"><img src="/assets/img/logo-white.webp" alt="Construbloc"><span>Pedidos</span></div>
         <div class="top-actions">
-          <a class="btn btn--sm btn--ghost" href="/dashboard#vendas">Painel</a>
+          <a class="btn btn--sm btn--ghost" href="/dashboard">Painel</a>
           <button class="btn btn--sm btn--ghost" type="button" id="logout">Sair</button>
         </div>
       </div>
+      <nav class="wrap tabs" role="tablist" aria-label="Seções">
+        <button class="tab is-active" type="button" role="tab" id="tab-pedidos" aria-controls="painel-pedidos" aria-selected="true">Pedidos</button>
+        <button class="tab" type="button" role="tab" id="tab-vendas" aria-controls="painel-vendas" aria-selected="false">Vendas</button>
+      </nav>
     </header>
 
     <main class="wrap">
-      <div class="month">
-        <button class="btn btn--sm" type="button" id="prev" aria-label="Mês anterior">‹</button>
-        <h1 id="month-title" aria-live="polite"></h1>
-        <button class="btn btn--sm" type="button" id="next" aria-label="Próximo mês">›</button>
+      <div class="periodo">
+        <label for="periodo">Período</label>
+        <select id="periodo"><option>Carregando…</option></select>
       </div>
-      <div class="kpis" id="kpis"></div>
-      <div class="tools">
-        <input class="field" type="search" id="busca" placeholder="Buscar nome, telefone ou produto" aria-label="Buscar pedidos">
-      </div>
-      <p class="error" id="list-error" role="alert"></p>
-      <div class="list" id="list"></div>
+
+      <section id="painel-pedidos" role="tabpanel" aria-labelledby="tab-pedidos">
+        <div class="kpis" id="kpis"></div>
+        <div class="tools">
+          <input class="field" type="search" id="busca" placeholder="Buscar nome, telefone ou produto" aria-label="Buscar pedidos">
+        </div>
+        <p class="error" id="list-error" role="alert"></p>
+        <div class="list" id="list"></div>
+      </section>
+
+      <section id="painel-vendas" class="hidden" role="tabpanel" aria-labelledby="tab-vendas">
+        <div id="vendas-body"></div>
+      </section>
     </main>
 
     <button class="btn btn--gold fab" type="button" id="novo">+ Novo pedido</button>
@@ -230,6 +277,8 @@
   <datalist id="produtos-list"></datalist>
   <div class="toast hidden" id="toast" role="status"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous" defer></script>
+  <script src="/pedidos/vendas.js" defer></script>
   <script src="/pedidos/app.js" defer></script>
 </body>
 </html>
