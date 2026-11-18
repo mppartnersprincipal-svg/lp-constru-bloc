@@ -19,7 +19,7 @@ Histórico resumido para dar contexto em novas conversas. Mantido pelo Claude (v
 
 ## Pendências
 
-- Pedidos: rodar no SQL Editor do Supabase (khipnjfbxjgvmjvyxero não aparece no MCP) a migration `0004_construbloc_pedidos.sql` e depois `pedidos_import_2026-11-18.sql` (Google-Ads-Automate/clientes/construbloc/relatorios). A planilha usada só tinha novembro até 01/11; se o Vinícius tiver versão mais nova, reimportar (é idempotente pela linha da planilha) ou ele lança o resto em /pedidos.
+- Pedidos: migration 0004 e importação rodadas pelo Pedro em 18/11 e merge na main (no ar). Falta conferir logado em /pedidos e na seção Vendas (o `.env.local` desta máquina não tem a service key real, então o teste com banco não roda local). A planilha usada só tinha novembro até 01/11; se o Vinícius tiver versão mais nova, reimportar (idempotente pela linha da planilha) ou ele lança o resto em /pedidos.
 
 - Confirmar no GA4: `whatsapp_click` e `phone_click` como evento-chave + dimensões personalizadas (ver README).
 - Testar tags no GTM Preview no site publicado.
